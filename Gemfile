@@ -14,7 +14,6 @@ end
 
 group :production do
   gem 'pg'
-	gem 'faker', '0.3.1'
 end
 
 group :development do
