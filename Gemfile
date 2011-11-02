@@ -6,7 +6,7 @@ gem 'rails', '3.1.1'
 gem 'gravatar_image_tag'
 gem 'will_paginate'
 gem 'rack', '!= 1.3.4' 
-
+gem 'jquery-rails'
 
 group :development, :test do
 	gem 'sqlite3'
