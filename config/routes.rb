@@ -1,5 +1,37 @@
 Karma::Application.routes.draw do
   
+  get "session/new"
+
+  get "session/create"
+
+  get "session/destroy"
+
+  get "karma_grant/new"
+
+  get "karma_grant/edit"
+
+  get "karma_grant/destroy"
+
+  get "comment/new"
+
+  get "comment/edit"
+
+  get "comment/destroy"
+
+  get "notice/new"
+
+  get "notice/show"
+
+  get "notice/destroy"
+
+  get "user/new"
+
+  get "user/show"
+
+  get "user/create"
+
+  get "user/destroy"
+
   get "pages/home"
   get "pages/about"
 
