@@ -7,6 +7,7 @@ gem 'gravatar_image_tag'
 gem 'will_paginate'
 gem 'rack', '!= 1.3.4' 
 gem 'jquery-rails'
+gem 'uglifier'
 
 group :development, :test do
 	gem 'sqlite3'
