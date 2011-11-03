@@ -1,5 +1,7 @@
 Karma::Application.routes.draw do
   
+  resources :users
+  
   get "session/new"
 
   get "session/create"
@@ -24,17 +26,15 @@ Karma::Application.routes.draw do
 
   get "notice/destroy"
 
-  get "user/new"
-
-  get "user/show"
-
-  get "user/create"
+  get "users/edit"
 
   get "user/destroy"
 
   get "pages/home"
+  
   get "pages/about"
 
+  match '/signup',  :to => 'users#new'
   root :to => 'pages#home'
   
   # The priority is based upon order of creation:

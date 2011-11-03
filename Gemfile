@@ -8,6 +8,7 @@ gem 'will_paginate'
 gem 'rack', '!= 1.3.4' 
 gem 'jquery-rails'
 gem 'uglifier'
+gem 'linguistics'
 
 group :development, :test do
 	gem 'sqlite3'
@@ -19,7 +20,7 @@ end
 
 group :development do
 	gem 'rspec-rails', '2.6.1'
-	gem 'annotate'
+	gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 	gem 'faker', '0.3.1'
 end
 
@@ -27,7 +28,7 @@ group :test do
 	gem 'rspec-rails', '2.6.1'
 	gem 'webrat', '0.7.1'
 	gem 'factory_girl_rails'
-
+	gem 'spork'
 end
 
 
