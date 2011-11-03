@@ -1,0 +1,16 @@
+<% if @user.errors.any? %>
+  <div id="error_explanation">
+    <h2>
+		<% if @user.errors.count==1 %>
+			There was one error
+		<% else %>
+			There were <%= @user.errors.count.en.numwords %> errors
+		<% end %>
+		with your signup information.</h2>
+    <ul>
+    <% @user.errors.full_messages.each do |msg| %>
+      <li><%= msg %></li>
+    <% end %>
+    </ul>
+  </div>
+<% end %>
