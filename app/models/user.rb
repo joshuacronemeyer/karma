@@ -2,21 +2,39 @@
 #
 # Table name: users
 #
-#  id                 :integer         not null, primary key
-#  name               :string(255)
-#  email              :string(255)
-#  password_encrypted :string(255)
-#  salt               :string(255)
-#  created_at         :datetime
-#  updated_at         :datetime
+#  id                     :integer         not null, primary key
+#  name                   :string(255)
+#  email                  :string(255)
+#  encrypted_password     :string(255)
+#  created_at             :datetime
+#  updated_at             :datetime
+#  reset_password_token   :string(255)
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer         default(0)
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :string(255)
+#  last_sign_in_ip        :string(255)
+#  confirmation_token     :string(255)
+#  confirmed_at           :datetime
+#  confirmation_sent_at   :datetime
+#  password_salt          :string(255)
+#  failed_attempts        :integer         default(0)
+#  unlock_token           :string(255)
+#  locked_at              :datetime
 #
 
-require 'digest'
-class User < ActiveRecord::Base
 
-  attr_accessor :password 
-  attr_accessible :name, :email, :password, :password_confirmation
-   
+class User < ActiveRecord::Base
+  # Include default devise modules. Others available are:
+  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable #, :lockable,:confirmable
+
+  # Setup accessible (or protected) attributes for your model
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+
   
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
@@ -30,38 +48,7 @@ class User < ActiveRecord::Base
   validates( :password, :presence => true,
                         :confirmation => true,
                         :length => { :within =>  (6..40) } )
-                        
-  before_save :encrypt_password
-  
-  def correct_password?(submitted_password)
-    password_encrypted == encrypt(submitted_password)
-  end
-  
-  def self.authenticate(email, submitted_password)
-    user = find_by_email(email)
-    return nil if user.nil?
-    return user if user.correct_password?(submitted_password)
-  end
-
   
 private
 
-  def encrypt_password
-    self.salt = make_salt unless correct_password?(password)
-    self.password_encrypted = encrypt(password)
-  end
-  
-  def encrypt(string)
-    secure_hash("#{salt}--#{string}")
-  end
-
-  def make_salt
-    secure_hash("#{Time.now.utc}--#{password}")
-  end
-
-  def secure_hash(string)
-    Digest::SHA2.hexdigest(string)
-  end
-  
-    
 end

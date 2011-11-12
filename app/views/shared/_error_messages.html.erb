@@ -1,10 +1,10 @@
 <% if @user.errors.any? %>
   <div id="error_explanation">
-    <h2>
+    <h2>Oh no! There
 		<% if @user.errors.count==1 %>
-			There was one error
+			 was one error
 		<% else %>
-			There were <%= @user.errors.count.en.numwords %> errors
+			 were <%= @user.errors.count.en.numwords %> errors
 		<% end %>
 		with your signup information.</h2>
     <ul>

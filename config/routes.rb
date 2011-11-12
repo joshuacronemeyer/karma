@@ -1,13 +1,9 @@
 Karma::Application.routes.draw do
   
+  devise_for :users
+
   resources :users
   
-  get "session/new"
-
-  get "session/create"
-
-  get "session/destroy"
-
   get "karma_grant/new"
 
   get "karma_grant/edit"
@@ -28,13 +24,13 @@ Karma::Application.routes.draw do
 
   get "users/edit"
 
-  get "user/destroy"
+  get "users/destroy"
 
   get "pages/home"
   
   get "pages/about"
+  
 
-  match '/signup',  :to => 'users#new'
   root :to => 'pages#home'
   
   # The priority is based upon order of creation:

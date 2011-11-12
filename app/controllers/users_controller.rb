@@ -1,4 +1,7 @@
 class UsersController < ApplicationController
+
+  before_filter :authenticate_user!
+
   def new
     @user = User.new
     @title = "Sign up"
@@ -9,22 +12,28 @@ class UsersController < ApplicationController
     @title = @user.name
   end
 
-  def create
-    @user = User.new(params[:user])
-    if @user.save
-    #  sign_in @user
-      flash[:success] = "Welcome to Karma!"
-      redirect_to @user
-    else
-      @title = "Sign up"
-      render 'new'
-    end
-  end
+#  def create
+#    @user = User.new(params[:user])
+#    if @user.save
+#    #  sign_in @user
+#      flash[:success] = "Welcome to Karma!"
+#      redirect_to @user
+#    else
+#      @title = "Sign up"
+#      render 'new'
+#    end
+#  end
 
   def edit
   end
 
   def destroy
   end
+  
+  def index
+    @users = User.all
+    @title = "All users"
+  end
+  
 
 end

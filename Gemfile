@@ -9,6 +9,7 @@ gem 'rack', '!= 1.3.4'
 gem 'jquery-rails'
 gem 'uglifier'
 gem 'linguistics'
+gem 'devise'
 
 group :development, :test do
 	gem 'sqlite3'
