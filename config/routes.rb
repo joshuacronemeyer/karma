@@ -4,32 +4,9 @@ Karma::Application.routes.draw do
 
   resources :users
   
-  get "karma_grant/new"
-
-  get "karma_grant/edit"
-
-  get "karma_grant/destroy"
-
-  get "comment/new"
-
-  get "comment/edit"
-
-  get "comment/destroy"
-
-  get "notice/new"
-
-  get "notice/show"
-
-  get "notice/destroy"
-
-  get "users/edit"
-
-  get "users/destroy"
-
-  get "pages/home"
+  match '/about', :to => 'pages#about'
   
-  get "pages/about"
-  
+  match '/help', :to => 'pages#help'
 
   root :to => 'pages#home'
   

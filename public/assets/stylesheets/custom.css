@@ -8,9 +8,8 @@
 
 /* Header style definitions */
 
-h1.title {
+h1.logo {
 	display:inline;
-	
 }
 
 a.logo {
@@ -34,28 +33,30 @@ td.nav {
   text-align:right;
 }
 
-td.nav ul {
+/* Navigation Bar style */
+
+nav ul {
   margin: 0;
   padding: 0;
 }
 
-td.nav ul li {
+nav ul li {
   list-style-type: none;
   display: inline-block;
   padding: 0.2em 0;
 }
 
-td.nav ul li a {
-
+nav ul li a {
+  color: #0043AD;
   padding: 0 5px;
   font-weight: bold;
 }
 
-td.nav ul li a:visited {
+nav ul li a:visited {
 
 }
 
-td.nav ul li a:hover {
+nav ul li a:hover {
   text-decoration: underline;
 }
 
@@ -64,6 +65,11 @@ td.nav ul li a:hover {
 a {
 	  text-decoration: none;
 }
+
+footer {
+	text-align:center;
+}
+
 
 /*  Error messages */
 
