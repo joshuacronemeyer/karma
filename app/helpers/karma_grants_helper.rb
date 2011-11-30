@@ -1,0 +1,2 @@
+module KarmaGrantsHelper
+end

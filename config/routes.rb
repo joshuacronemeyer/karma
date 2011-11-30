@@ -2,7 +2,19 @@ Karma::Application.routes.draw do
   
   devise_for :users
 
-  resources :users
+  resources :users #do
+ #     member do
+ #       get :karma_grantors, :karma_grantees
+ #     end
+ # end
+  
+  # need to add action limiters for resources
+  
+  resources :notices   
+  
+  resources :comments
+  
+  resources :karma_grants
   
   match '/about', :to => 'pages#about'
   

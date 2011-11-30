@@ -48,6 +48,10 @@ class User < ActiveRecord::Base
   validates( :password, :presence => true,
                         :confirmation => true,
                         :length => { :within =>  (6..40) } )
+                        
+  has_many :notices
+  has_many :comments
+  has_many :karma_grants
   
 private
 

@@ -3,11 +3,11 @@
 # Table name: karma_grants
 #
 #  id           :integer         not null, primary key
-#  from_user    :integer
-#  to_user      :integer
+#  user_id      :integer
 #  karma_points :integer
 #  created_at   :datetime
 #  updated_at   :datetime
+#  notice_id    :integer
 #
 
 require 'spec_helper'

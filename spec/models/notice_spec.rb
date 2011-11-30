@@ -3,12 +3,14 @@
 # Table name: notices
 #
 #  id                  :integer         not null, primary key
-#  poster_id           :integer
-#  named_non_users     :string(255)
+#  user_id             :integer
+#  doers               :string(255)
 #  timestamp_completed :datetime
 #  open                :boolean
 #  created_at          :datetime
 #  updated_at          :datetime
+#  description         :string(255)
+#  self_doer           :boolean
 #
 
 require 'spec_helper'

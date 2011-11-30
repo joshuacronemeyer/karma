@@ -6,6 +6,83 @@
 	padding: 6px;
 }
 
+/* Input form */
+
+
+form.new_notice input {
+	margin: 0;
+	border: 1;
+}
+
+form.new_notice label {
+	margin: 0;
+	border: 0;
+}
+
+table.new_notice {
+	border-collapse: collapse; 
+}
+
+table.new_notice td tr {
+	padding: 0;
+	margin: 0;
+}
+
+
+div.field {
+	margin: 0;
+	padding: 0;
+	display:inline;
+} 
+
+
+/* post styling */
+
+
+.notice_description {
+	display:inline;	
+}
+
+.notice_date {
+	font-style:italic;
+	font-size:small;
+}
+
+.comment_comment {
+	display:inline;
+}
+
+.comment_date {
+	font-style:italic;
+	font-size:small;
+}
+
+.karma_points {
+	font-size:smaller;
+	font-weight:bold;
+}
+
+/* new comment form */
+
+table.new_comment {
+	border-collapse: collapse
+}
+table.new_comment td {
+	padding: 0;
+	margin: 0;
+	vertical-align: top;
+}
+
+/* karma_grant form */
+
+table.new_karma_grant tr td {
+	margin: 0;
+	padding: 0;
+	cellpadding: 0;
+	callspacing: 0;
+	font-size:small;
+}
+
 /* Header style definitions */
 
 h1.logo {

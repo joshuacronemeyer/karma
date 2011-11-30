@@ -1,1 +1,16 @@
-<h3> Welcome to Karma! </h3>
+<% if user_signed_in? %>
+
+<table class="front" summary="For signed-in users">
+	<tr>
+		<%= render 'layouts/signed_in_home' %>
+		
+		<td class="sidebar">	</td>
+		
+	</tr>	
+</table>
+
+<% else %>
+
+<%= render 'layouts/not_signed_in_home' %>
+
+<% end %>

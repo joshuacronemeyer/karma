@@ -11,31 +11,34 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111111032950) do
+ActiveRecord::Schema.define(:version => 20111130001244) do
 
   create_table "comments", :force => true do |t|
-    t.boolean  "description"
-    t.integer  "poster_id"
+    t.boolean  "original_comment"
+    t.integer  "notice_id"
     t.string   "comment"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "karma_grants", :force => true do |t|
-    t.integer  "from_user"
-    t.integer  "to_user"
+    t.integer  "user_id"
     t.integer  "karma_points"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "notice_id"
   end
 
   create_table "notices", :force => true do |t|
-    t.integer  "poster_id"
-    t.string   "named_non_users"
+    t.integer  "user_id"
+    t.string   "doers"
     t.datetime "timestamp_completed"
     t.boolean  "open"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "description"
+    t.boolean  "self_doer"
   end
 
   create_table "users", :force => true do |t|

@@ -1,0 +1,60 @@
+<%= form_for @notice do |f| %>
+	
+	<%= render 'shared/error_messages', :object => f.object %>
+	
+	<table class="new_notice">
+		<tr>
+			<td>
+				<h3 style="padding:0; margin:0; margin-bottom:5px">Post a new notice:</h3>
+			</td>
+		</tr>
+		<tr> 
+			<td>
+				<div class="field" >
+					<%= f.check_box :self_doer %>
+					<%= f.label :self_doer, "I (and other people):"%><br />
+				</div>
+	
+				<div class="field">
+					<%#= f.label :doers, "other people:" %>
+					<%= f.text_field :doers, :size => 50 %>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="field">
+					<%= f.label :description, "did what?" %><br />
+				</div>
+
+				<div class="field">
+					<%= f.text_field :description, :size => 50 %>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="field">
+					<%= label_tag :comment, "comment:", 
+								  :style => "vertical-align:top" %><br />
+				</div>					
+
+				<div class="field">
+
+					<%= text_area_tag :comment, nil, :size => "37x6" %>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td align = right >
+				<div class="actions">
+					<%= f.submit "Post" %>
+				</div>
+			</td>
+		</tr>
+	</table>
+	
+<% end %>
+	
+		
+		

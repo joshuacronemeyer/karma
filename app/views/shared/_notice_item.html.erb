@@ -1,0 +1,26 @@
+<%= notice_item.doers if notice_item.doers != nil %>
+<%= "and" if (notice_item.doers != "" && notice_item.self_doer) %>
+<%= User.find(notice_item.user_id).name if notice_item.self_doer %>
+
+<div class="notice_description">
+	<%= notice_item.description %><br />
+</div>
+
+<div class="notice_date">
+	<%= notice_item.created_at.localtime.to_formatted_s(:long_ordinal) %>
+</div>
+
+<div class="karma_points">
+	total karma: <%= notice_item.total_karma %> points
+</div>
+
+<% @new_karma_grant = KarmaGrant.new %>
+<% @new_karma_grant.notice_id = notice_item.id %>
+<%= render 'shared/karma_grant_form'%>
+<br />
+<% @comment_items = notice_item.comments.all %>
+<%= render :partial => 'shared/comment_item', :collection => @comment_items %>
+<% @new_comment = Comment.new %>
+<% @new_comment.notice_id = notice_item.id %>
+<%= render 'shared/new_comment_form' %>
+<br /><br />

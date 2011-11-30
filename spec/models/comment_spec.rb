@@ -2,12 +2,13 @@
 #
 # Table name: comments
 #
-#  id          :integer         not null, primary key
-#  description :boolean
-#  poster_id   :integer
-#  comment     :string(255)
-#  created_at  :datetime
-#  updated_at  :datetime
+#  id               :integer         not null, primary key
+#  original_comment :boolean
+#  notice_id        :integer
+#  comment          :string(255)
+#  created_at       :datetime
+#  updated_at       :datetime
+#  user_id          :integer
 #
 
 require 'spec_helper'
