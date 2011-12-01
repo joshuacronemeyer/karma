@@ -13,5 +13,30 @@
 require 'spec_helper'
 
 describe KarmaGrant do
-  pending "add some examples to (or delete) #{__FILE__}"
+  
+  it "should create a new instance given valid attributes"
+  
+  describe "associations" do
+    
+    it "should have a user attribute"
+
+    it "should have the right associated user"
+
+    it "should have a notice attribute"
+
+    it "should have the right associated notice"
+    
+  end
+  
+  describe "validations" do
+    
+    it "should require a user id"
+    
+    it "should require a notice id"
+    
+  end
+
+
+
+
 end

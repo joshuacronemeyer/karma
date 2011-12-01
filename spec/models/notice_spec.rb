@@ -16,5 +16,26 @@
 require 'spec_helper'
 
 describe Notice do
-  pending "add some examples to (or delete) #{__FILE__}"
+
+ it "should create a new instance given valid attributes"
+  
+  describe "associations" do
+    
+    it "should have a user attribute"
+
+    it "should have the right associated user"
+    
+  end
+  
+  describe "validations" do
+    
+    it "should reject notices with blank descriptions"
+    
+    it "should reject notices with no users identified"
+    
+    it "should require a user id"
+    
+    it "should require a notice id"
+    
+  end
 end

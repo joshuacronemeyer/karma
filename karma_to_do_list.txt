@@ -1,0 +1,17 @@
+create test suite
+implement user authentication
+implement comment and karma_grant deletion
+complete devise email support
+implement un-claimed notices
+stylize notice items
+stylize overall site
+implement recurring notices
+implement user index
+implement user views
+implement user self-views
+implement admin users
+implement admin control panel
+implement proper user tagging
+remove unneeded routes (action limiters for resources)
+implement Ajax interface
+produce Help documentation

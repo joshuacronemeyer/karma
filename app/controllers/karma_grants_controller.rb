@@ -7,6 +7,8 @@ class KarmaGrantsController < ApplicationController
     @new_karma_grant.user_id = current_user.id
     if @new_karma_grant.already_granted?
       flash[:error] = "Can't grant karma twice"
+    elsif @new_karma_grant.self_grant?
+      flash[:error] = "Can't grant karma to yourself"
     else
       @new_karma_grant.save
       flash[:success] = "Karma granted!"  

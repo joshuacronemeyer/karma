@@ -2,11 +2,7 @@ Karma::Application.routes.draw do
   
   devise_for :users
 
-  resources :users #do
- #     member do
- #       get :karma_grantors, :karma_grantees
- #     end
- # end
+  resources :users 
   
   # need to add action limiters for resources
   
@@ -16,10 +12,9 @@ Karma::Application.routes.draw do
   
   resources :karma_grants
   
+  match '/signup', :to => 'users#new'
   match '/about', :to => 'pages#about'
-  
   match '/help', :to => 'pages#help'
-
   root :to => 'pages#home'
   
   # The priority is based upon order of creation:

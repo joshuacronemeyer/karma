@@ -12,18 +12,6 @@ class UsersController < ApplicationController
     @title = @user.name
   end
 
-#  def create
-#    @user = User.new(params[:user])
-#    if @user.save
-#    #  sign_in @user
-#      flash[:success] = "Welcome to Karma!"
-#      redirect_to @user
-#    else
-#      @title = "Sign up"
-#      render 'new'
-#    end
-#  end
-
   def edit
   end
 

@@ -23,5 +23,10 @@ class KarmaGrant < ActiveRecord::Base
     end
     false
   end
+  
+  def self_grant?
+    if Notice.find(notice_id).user_id == user_id then return true end
+    false
+  end
 
 end
