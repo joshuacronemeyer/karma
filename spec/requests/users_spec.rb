@@ -4,6 +4,20 @@ describe "Users" do
 
   describe "signup" do
 
+    it "should show the sign-up page"
+    
+    it "should have the right title"
+     
+    it "should have a name field" 
+     
+    it "should have an email field"
+     
+    it "should have a password field"
+
+    it "should have a password confirmation field"
+    
+    it "should redirect users who are already signed-in"
+
     describe "failure" do
 
       it "should not make a new user" do
@@ -38,4 +52,42 @@ describe "Users" do
     end
 
   end
+  
+  describe "update" do
+    
+    before (:each) do
+
+    end
+    
+    describe "failure" do
+      
+      before(:each) do
+        @attr = { :email => "", :name => "", :password => "",
+                  :password_confirmation => "" }
+      end
+      
+      it "should have an error flash message"
+      
+      it "should render the 'edit' page"
+      
+      it "should have the right title"
+            
+    end
+    
+    describe "success" do
+      
+      before(:each) do
+        @attr = { :email => "user@example.com", :name => "New Name", :password => "barbaz",
+                  :password_confirmation => "barbaz" }
+      end
+      
+      it "should change the user's attributes" 
+      
+      it "should redirect to the user show page"
+      
+      it "should have a flash message" 
+      
+    end
+    
+  
 end

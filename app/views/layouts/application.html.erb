@@ -5,6 +5,9 @@
   <%= stylesheet_link_tag('stylesheets/custom', :media => 'screen')%>
   <%#= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
+
+  <%= javascript_include_tag 'jquery'%>
+  <%= javascript_include_tag 'rails' %>
 </head>
 <body>
 <div class="container">
@@ -17,7 +20,7 @@
 		<% end %>
 	</section>
 	
-	<section class="feed">
+	<section class="main">
 		<%= yield %>
 	</section>
 

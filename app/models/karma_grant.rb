@@ -19,14 +19,13 @@ class KarmaGrant < ActiveRecord::Base
 
   def already_granted?
     Notice.find(notice_id).karma_grants.each do |k|
-      if k.user_id == user_id then return true end
+      return true if k.user_id == user_id
     end
     false
   end
   
   def self_grant?
-    if Notice.find(notice_id).user_id == user_id then return true end
-    false
+    Notice.find(notice_id).user_id == user_id ? true : false
   end
 
 end

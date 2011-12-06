@@ -1,6 +1,9 @@
-<%= notice_item.doers if notice_item.doers != nil %>
-<%= "and" if (notice_item.doers != "" && notice_item.self_doer) %>
-<%= User.find(notice_item.user_id).name if notice_item.self_doer %>
+<div class="notice_doers">
+	<%= notice_item.doers if notice_item.doers != nil %>
+	and
+	<%= "and" if (notice_item.doers != "" && notice_item.self_doer) %>
+	<%= User.find(notice_item.user_id).name if notice_item.self_doer %>
+</div>
 
 <div class="notice_description">
 	<%= notice_item.description %><br />

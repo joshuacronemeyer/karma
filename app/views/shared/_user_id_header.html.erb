@@ -1,0 +1,16 @@
+<table class="user_show">
+	<tr>
+		<td>
+			<%= gravatar_image_tag(@user.email, :gravatar => {:size => 50},
+ 												:style => "vertical-align:middle",
+ 												:class => "gravatar") %> <br />
+	
+		</td>
+		<td style="padding-left:10px; vertical-align:middle">
+			<h3>		
+				<%= @user.name %>
+			</h3>
+		</td>
+	</tr>
+
+</table>

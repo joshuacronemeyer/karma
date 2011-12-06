@@ -1,5 +1,6 @@
 create test suite
 implement user authentication
+implememt username login
 implement comment and karma_grant deletion
 complete devise email support
 implement un-claimed notices
@@ -15,3 +16,4 @@ implement proper user tagging
 remove unneeded routes (action limiters for resources)
 implement Ajax interface
 produce Help documentation
+implement mailing list functionality

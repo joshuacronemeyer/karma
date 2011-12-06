@@ -1,0 +1,26 @@
+<li>
+
+<%= link_to gravatar_for(user, :size => 30), user %>
+<%= link_to user.name, user %>
+
+<% if user.admin? %><b>Admin</b><% end %>
+
+<% if current_user.admin? %>	
+	
+	<% if user.admin? %>
+    	(<a href="/users/<%= "#{user.id}" %>/toggle_admin">Revoke</a>)	
+
+	<% else %>
+		(<a href="/users/<%= "#{user.id}" %>/toggle_admin">Make admin</a>)
+	
+	<% end %>
+	
+	| <%= link_to "delete", user, :method => :delete,
+								  :confirm => "You sure?",
+								  :title => "Delete #{user.name}"%>
+
+<% end %>
+
+
+
+</li>

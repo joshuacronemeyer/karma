@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111130001244) do
+ActiveRecord::Schema.define(:version => 20111205234410) do
 
   create_table "comments", :force => true do |t|
     t.boolean  "original_comment"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(:version => 20111130001244) do
     t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
+    t.boolean  "admin"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

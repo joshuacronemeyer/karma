@@ -6,7 +6,7 @@
 	padding: 6px;
 }
 
-/* Input form */
+/* New notice form */
 
 
 form.new_notice input {
@@ -39,8 +39,13 @@ div.field {
 /* post styling */
 
 
+.notice_doers {
+	display:inline
+	
+}
 .notice_description {
 	display:inline;	
+	background: #A0A0A0;
 }
 
 .notice_date {
@@ -135,6 +140,15 @@ nav ul li a:visited {
 
 nav ul li a:hover {
   text-decoration: underline;
+}
+
+/* User profile display */
+
+
+table.user_show tr td {
+	padding: 0px;
+	margin: 0px;
+	border-collapse: collapse;
 }
 
 /* Main style definitions */

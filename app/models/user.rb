@@ -23,32 +23,35 @@
 #  failed_attempts        :integer         default(0)
 #  unlock_token           :string(255)
 #  locked_at              :datetime
+#  admin                  :boolean
 #
 
 
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :token_authenticatable, :encryptable, :confirmable, :lockable, :timeoutable and :omniauthable
+
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable #, :lockable,:confirmable
+         :recoverable, :rememberable, :trackable #, :lockable,:confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :admin
 
   
-  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
+#  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   
   validates( :name, :presence => true,
              :length => { :maximum => 50 },
              :uniqueness => {:case_sensitive => false} )
-  validates( :email, :presence => true, 
-             :format => {:with => email_regex},
-             :uniqueness => {:case_sensitive => false}  )
+  
+  devise :validatable
+  
+ # validates( :email, :presence => true, 
+#             :format => {:with => email_regex},
+#             :uniqueness => {:case_sensitive => false}  )
 
-  validates( :password, :presence => true,
-                        :confirmation => true,
-                        :length => { :within =>  (6..40) } )
-                        
+#  validates( :password, :presence => true,
+#                        :confirmation => true,
+#                        :length => { :within =>  (6..40) } )
+
   has_many :notices
   has_many :comments
   has_many :karma_grants
