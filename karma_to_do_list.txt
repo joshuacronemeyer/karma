@@ -1,3 +1,11 @@
+finish sample_data.rake
+finish user show page
+write notice show page
+add front-page pagination
+implement comment trimming
+
+implement user self-views
+implement admin control panel
 create test suite
 implement user authentication
 implememt username login
@@ -7,11 +15,6 @@ implement un-claimed notices
 stylize notice items
 stylize overall site
 implement recurring notices
-implement user index
-implement user views
-implement user self-views
-implement admin users
-implement admin control panel
 implement proper user tagging
 remove unneeded routes (action limiters for resources)
 implement Ajax interface

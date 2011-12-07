@@ -1,12 +1,12 @@
 Karma::Application.routes.draw do
   
   devise_for :users
-
+  
+  
   devise_scope :user do 
 #    match '/sign_up' => 'devise/registrations#new'
 #    match '/users/new' => 'devise/registrations#new'
     match '/users/sign_out' => 'devise/sessions#destroy'
-    match '/users/:id/toggle_admin' => 'users#toggle_admin'
   end
   
   resources :users 
@@ -20,8 +20,7 @@ Karma::Application.routes.draw do
   resources :karma_grants
   
 
-  
-  match '/users/:id/test', :to => 'users#test'
+  match '/users/:id/toggle_admin/' => 'users#toggle_admin', :via => :get
   match '/about', :to => 'pages#about'
   match '/help', :to => 'pages#help'
   root :to => 'pages#home'

@@ -36,4 +36,18 @@ describe NoticesController do
     
   end
 
+  describe "GET 'show'" do
+    
+    it "should be successful" 
+    
+    it "should have the right title"
+    
+    it "should show the notice"
+    
+    it "should show comments"
+
+  end
+  
+  
+    
 end

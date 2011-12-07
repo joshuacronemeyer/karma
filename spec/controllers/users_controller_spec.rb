@@ -23,24 +23,88 @@ describe UsersController do
     describe "for signed-in users" do
       
       before(:each) do
-        test_sign_in(@user)
+        @user = test_sign_in(Factory(:user))
+        second = Factory(:user, :name => Faker::Name.name, :email => "another@example.com")
+        third = Factory(:user, :name => Faker::Name.name, :email => "another@example.net")
+        
+        @users = [@user, second, third]
+        30.times do
+          @users << Factory(:user, :name => Faker::Name.name, :email => Factory.next(:email))
+        end
+        
+      end
+        
+      it "should be successful" do
+        get :index
+        response.should  be_success
       end
       
+      it "should have the right title" do
+        get :index
+        response.should have_selector("title", :content => "All users")
+      end
       
-      it "should be successful" 
+      it "should have an element for each user" do
+        get :index
+        @users[0..2].each do |user|
+          response.should have_selector("li", :content => user.name)
+        end
+      end
       
-      it "should have the right title" 
+      it "should paginate users" do
+        get :index
+        response.should have_selector("div.pagination")
+        response.should have_selector("span.disabled", :content => "Previous")
+        response.should have_selector("a", :href => "/users?page=2", 
+                                           :content => "2")
+        response.should have_selector("a", :href => "/users?page=2", 
+                                           :content => "Next")
+      end
+
+      it "should not show delete links to non-admins" do
+        get :index
+        response.should_not have_selector("a", :content => "delete")
+      end
       
-      it "should have an element for each user" 
+      it "should not show make admin links" do
+        get :index
+        response.should_not have_selector("a", :content => "Make admin")
+      end
       
-      it "should paginate users"
+      it "should not show revoke admin links" do
+        get :index
+        response.should_not have_selector("a", :content => "Revoke")
+      end
+            
+    end
+   
+    describe "for admins" do
       
-      it "should not show delete links to non-admins"
+      before(:each) do
+        @admin = Factory(:user, :name => "admin", :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
+        second = Factory(:user, :name => Faker::Name.name, :email => "another@example.com", :admin => true)
+        third = Factory(:user, :name => Faker::Name.name, :email => "another@example.net", :admin => false)
+      end
       
-      it "should show delete links to admins"
+      it "should show delete links" do
+        get :index
+        response.should have_selector("a", :content => "delete")
+      end
+      
+      it "should show make admin links" do
+        get :index
+        response.should have_selector("a", :content => "Make admin")
+      end
+      
+      it "should show revoke admin links" do
+        get :index
+        response.should have_selector("a", :content => "Revoke")
+      end
       
     end
-    
+     
+     
   end
 
   describe "GET 'show'" do
@@ -128,14 +192,43 @@ describe UsersController do
   
   describe "toggle_admin" do
     
-    it "should allow admins to make other admins"
+    describe "for non-admins" do
+
+      before(:each) do
+        @user = test_sign_in(Factory(:user))
+        @second = Factory(:user, :name => Faker::Name.name, :email => "another@example.com", :admin => false)
+      end
+      
+      it "should not allow non-admins to make admins" do
+        get :toggle_admin, :id => @second.id
+        @second.admin?.should_not be_true
+      end
+      
+    end
     
-    it "should allow admins to revoke admin status"
+    describe "for admins" do
+      
+      before(:each) do
+        @admin = Factory(:user, :name => "admin", :email => "admin@example.com", :admin => true)
+        test_sign_in(@admin)
+        @second = Factory(:user, :name => Faker::Name.name, :email => "another@example.com", :admin => false)
+        @third = Factory(:user, :name => Faker::Name.name, :email => "another@example.net", :admin => true)
+      end
+
+      it "should allow admins to make other admins" do
+        get :toggle_admin, :id => @second.id
+        User.find(@second.id).should be_admin
+      end
+       
+      it "should allow admins to revoke admin status" do
+        get :toggle_admin, :id => @third.id
+        User.find(@third.id).should_not be_admin
+      end
+      
+    end
     
-    it "should not allow non-admins to make admins"
   
   end
-  
   
   describe "authentication of edit page" do
     
@@ -178,7 +271,7 @@ describe UsersController do
     describe "as a non-signed-in user" do
       it "should deny access" do
         delete :destroy, :id => @user
-        response.should redirect_to(signin_path)
+        response.should redirect_to(new_user_session_path)
       end
     end
     
@@ -193,7 +286,7 @@ describe UsersController do
     describe "as an admin user" do
       
       before(:each) do
-        @admin = Factory(:user, :email => "admin@example.com", :admin => true)
+        @admin = Factory(:user, :name => "admin", :email => "admin@example.com", :admin => true)
         test_sign_in(@admin)
       end
       

@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable #, :lockable,:confirmable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :admin
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :admin, :created_at
 
   
 #  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i

@@ -1,2 +1,27 @@
 <%= render 'shared/user_id_header' %>
 
+<% if @user_posts != nil %>
+	<% @user_posts.each do |post| %>
+
+		<div class="user_show_item">
+			<% if post.class == Notice %>
+			<% @notice_item = post %>
+				<%= @user.name %> posted a notice:
+				<%= render 'shared/notice_item_with_comments', :notice_item => post%>	
+			<% elsif post.class == KarmaGrant && @user == current_user %>
+			<% elsif post.class == Comment %>	
+				<%= @user.name %> commented on a notice:
+				<%= render 'shared/notice_item_singlet', 
+							:notice_item => Notice.find(post.notice_id)%>
+				<%= render 'shared/comment_item', :comment_item => post %>
+			<% end %>
+		</div>
+		
+	
+		
+	<% end %>
+	
+<% else %>
+	Nothing to show. 
+	
+<% end %>
