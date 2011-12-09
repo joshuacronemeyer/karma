@@ -1,2 +1,21 @@
-<h3>Recent notices:</h3>
-<%= render :partial => 'shared/notice_item_with_comments', :collection => @notice_items %>
+<div class="feed">
+
+	<div class="pagination">
+	    <div class="page_info">
+	      <%= page_entries_info @notice_items  %>
+	    </div>
+	 	<%= will_paginate @notice_items %>
+	  </div>
+	
+	<div class="feed_header">Recent notices:</div>
+	<%= render :partial => 'shared/notices/notice_item', 
+			   :collection => @notice_items %>
+
+	<div class="pagination">
+	    <div class="page_info">
+	      <%= page_entries_info @notice_items  %>
+	    </div>
+	    	<%= will_paginate @notice_items %>
+	  </div>
+
+</div>

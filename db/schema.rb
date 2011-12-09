@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111205234410) do
+ActiveRecord::Schema.define(:version => 20111207203810) do
 
   create_table "comments", :force => true do |t|
     t.boolean  "original_comment"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(:version => 20111205234410) do
     t.boolean  "open"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "description"
+    t.string   "content"
     t.boolean  "self_doer"
   end
 

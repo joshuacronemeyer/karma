@@ -1,8 +1,0 @@
-comment: <strong><%= User.find(comment_item.user_id).name %></strong> says:
-
-<div class="comment_comment">		
-	<%= comment_item.comment %>
-</div>
-<div class="comment_date">	
-	<%= comment_item.created_at.localtime.to_formatted_s(:long_ordinal)%>
-</div><br />

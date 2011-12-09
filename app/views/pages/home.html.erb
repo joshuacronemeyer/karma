@@ -1,16 +1,5 @@
 <% if user_signed_in? %>
-
-<table class="front" summary="For signed-in users">
-	<tr>
-		<%= render 'layouts/signed_in_home' %>
-		
-		<td class="sidebar">	</td>
-		
-	</tr>	
-</table>
-
+	<%= render 'layouts/signed_in_home' %>
 <% else %>
-
-<%= render 'layouts/not_signed_in_home' %>
-
+	<%= render 'layouts/not_signed_in_home' %>
 <% end %>

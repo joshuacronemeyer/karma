@@ -9,7 +9,7 @@
 #  open                :boolean
 #  created_at          :datetime
 #  updated_at          :datetime
-#  description         :string(255)
+#  content             :string(255)
 #  self_doer           :boolean
 #
 
@@ -25,7 +25,7 @@ class Notice < ActiveRecord::Base
   has_many :karma_grants
   has_many :comments
   
-  validates :description, :presence => true
+  validates :content, :presence => true
   validates :user_id, :presence => true
   
   default_scope :order => 'notices.created_at DESC'

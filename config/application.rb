@@ -2,6 +2,8 @@ require File.expand_path('../boot', __FILE__)
 
 require 'rails/all'
 require 'linguistics'
+require 'will_paginate/array'
+
 Linguistics::use( :en )
 
 if defined?(Bundler)

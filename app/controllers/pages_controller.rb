@@ -6,8 +6,11 @@ class PagesController < ApplicationController
     
     if user_signed_in?
       @notice = Notice.new
-      @notice_items = Notice.all
+      @notice_items = Notice.paginate(:page => params[:page])
+  
+      
     end
+    
     
   end
 

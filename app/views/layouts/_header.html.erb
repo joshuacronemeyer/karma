@@ -1,15 +1,14 @@
 <header>
 	
-	<table width="100%">
-		<tr>
-			<td width="50%">
+	<div class="header_logo">
 				<%= link_to logo, root_path %>
 				<h1 class="logo"><%= link_to "Karma", root_path, :class => "logo" %></h1>
-			</td>
-			<td class="nav">
+	</div>
+	
+	<div class="header_navbar">
 				<%= render 'layouts/navbar' %>
-			</td>
-		</tr>
-	</table>
+	</div>
+	
+	<div style="clear:both"></div>
 
 </header>

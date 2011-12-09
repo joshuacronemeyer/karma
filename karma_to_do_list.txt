@@ -1,8 +1,9 @@
-finish sample_data.rake
+
 finish user show page
 write notice show page
 add front-page pagination
 implement comment trimming
+remove tables
 
 implement user self-views
 implement admin control panel

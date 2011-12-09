@@ -13,6 +13,7 @@ class UsersController < ApplicationController
       @user_posts.flatten!
       @user_posts.sort! { |b,a| a.created_at <=> b.created_at }
     end
+    @user_posts = @user_posts.paginate(:page => params[:page], :per_page => 10)
     
   end
 

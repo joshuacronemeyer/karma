@@ -1,25 +1,55 @@
 <%= render 'shared/user_id_header' %>
 
 <% if @user_posts != nil %>
-	<% @user_posts.each do |post| %>
-
-		<div class="user_show_item">
-			<% if post.class == Notice %>
-			<% @notice_item = post %>
-				<%= @user.name %> posted a notice:
-				<%= render 'shared/notice_item_with_comments', :notice_item => post%>	
-			<% elsif post.class == KarmaGrant && @user == current_user %>
-			<% elsif post.class == Comment %>	
-				<%= @user.name %> commented on a notice:
-				<%= render 'shared/notice_item_singlet', 
-							:notice_item => Notice.find(post.notice_id)%>
-				<%= render 'shared/comment_item', :comment_item => post %>
-			<% end %>
-		</div>
-		
 	
+	<div class="feed">
+
+		<%= will_paginate @user_posts %>
+
+		<% @user_posts.each do |post| %>
+
+			<div class="user_show_item">
+
+				<% if post.class == Notice %>
+					<% @notice_item = post %>
+					<div class="user_show_item_description">
+						<%#= (@user == current_user) ? "You" : @user.name %> posted a notice:
+					</div>
+						<%= render 'shared/notices/notice_item', :notice_item => post%>
+				
+				<% elsif post.class == KarmaGrant && @user == current_user %>
+					<div class="user_show_item_description">
+						<!--You--> granted <%= pluralize(post.karma_points, "karma point") %> 
+						to the following notice:
+					</div>
+					
+					<%= render 'shared/notices/notice_description', 
+								:notice_item => Notice.find(post.notice_id)%>
+
+					<div class="notice_date">
+						granted on 
+						<%=post.created_at.localtime.to_formatted_s(:long_ordinal) %>
+					</div>
+				
+				<% elsif post.class == Comment %>	
+					<div class="user_show_item_description">
+						<%#= (@user == current_user) ? "You" : @user.name %>  
+						commented on the following notice:
+					</div>
+						<%= render 'shared/notices/notice_description', 
+									:notice_item => Notice.find(post.notice_id)%>
+					<div class="notice_comments">
+						<%= render 'shared/comments/comment_item', :comment_item => post %>
+					</div>
+				<% end %>
+
+			</div>	
 		
-	<% end %>
+		<% end %>
+
+		<%= will_paginate @user_posts %>
+		
+	</div>
 	
 <% else %>
 	Nothing to show. 

@@ -12,7 +12,9 @@
 <body>
 <div class="container">
 
-	<%= render 'layouts/header' %>
+	<header>
+		<%= render 'layouts/header' %>
+	</header>
 	
 	<section class="flash messages">
 		<% flash.each do |key, value| %>
@@ -24,8 +26,10 @@
 		<%= yield %>
 	</section>
 
-	<%= render 'layouts/footer' %>
-
+	<footer>
+		<%= render 'layouts/navbar' %>
+	</footer>
+	
 <% if Rails.env.development? %>
 	<%= debug(params) %>
 <% end %>
