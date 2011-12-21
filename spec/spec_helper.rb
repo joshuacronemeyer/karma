@@ -1,6 +1,7 @@
 #require 'rubygems'
 require 'spork'
-
+require 'simplecov'
+SimpleCov.start
 
 
 
@@ -13,8 +14,8 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
   require 'faker'
-  
-  
+  require 'webrat'
+  require 'webrat/core/matchers' 
 
   # Requires supporting ruby files with custom matchers and macros, etc,
   # in spec/support/ and its subdirectories.

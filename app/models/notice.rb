@@ -15,15 +15,15 @@
 
 class Notice < ActiveRecord::Base
   
-  attr_accessible :description
+  attr_accessible :content
   attr_accessible :doers
   attr_accessible :self_doer
   attr_accessible :open
   
   belongs_to :user
   
-  has_many :karma_grants
-  has_many :comments
+  has_many :karma_grants, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
   
   validates :content, :presence => true
   validates :user_id, :presence => true

@@ -15,26 +15,56 @@ require 'spec_helper'
 
 describe Comment do
   
-  it "should create a new instance given valid attributes"
+  before(:each) do
+    @user = Factory(:user)
+    @notice = Factory(:notice)
+    @attr = { :comment => "Comment comment", :notice => @notice, :user => @user }
+  end
+  
+  it "should create a new instance given valid attributes" do
+    Comment.create!(@attr)
+  end
   
   describe "associations" do
     
-    it "should have a user attribute"
+    before(:each) do
+      @comment = Comment.create(@attr)
+    end
+    
+    it "should have a user attribute" do
+      @comment.should respond_to(@user)
+    end
 
-    it "should have the right associated user"
+    it "should have the right associated user" do
+      @comment.user.should == @user
+    end
 
-    it "should have a notice attribute"
+    it "should have a notice attribute" do
+      @comment.should respond_to(@notice)
+    end
 
-    it "should have the right associated notice"
+    it "should have the right associated notice" do
+      @comment.notice.should == @notice
+    end
+    
   end
   
   describe "validations" do
     
-    it "should require a user id"
+    it "should require a user id" do
+      no_user_comment = Comment.new(@attr.merge(:user => nil))
+      no_user_comment.should_not be_valid
+    end
     
-    it "should require a notice id"
+    it "should require a notice id" do
+      no_notice_comment = Comment.new(@attr.merge(:notice => nil))
+      no_notice.comment.should_not be_valid
+    end
     
-    it "should require nonblank content"
+    it "should require nonblank content" do
+      no_content_comment = Comment.new(@attr.merge(:comment => " "))
+      no_content_comment.should_not be_valid
+    end
     
   end
 

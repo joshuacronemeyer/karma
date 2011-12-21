@@ -7,12 +7,15 @@ describe "Karma Grants" do
     describe "failure" do
       
       it "should not create a new karma_grant"
-      
+    
+      it "should render the last viewed page"
     end
     
     describe "success" do
       
       it "should create a new karma_grant"
+      
+      it "should render the last viewed page"
       
     end
     

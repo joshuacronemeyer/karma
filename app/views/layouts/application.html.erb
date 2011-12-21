@@ -12,27 +12,29 @@
 <body>
 <div class="container">
 
-	<header>
-		<%= render 'layouts/header' %>
-	</header>
-	
-	<section class="flash messages">
-		<% flash.each do |key, value| %>
-		<%= content_tag(:div, value, :class => "flash #{key}") %>
-		<% end %>
-	</section>
-	
-	<section class="main">
-		<%= yield %>
-	</section>
+<%= render 'layouts/header' %>
 
-	<footer>
-		<%= render 'layouts/navbar' %>
-	</footer>
-	
-<% if Rails.env.development? %>
+<section class="flash messages">
+	<% flash.each do |key, value| %>
+	<%= content_tag(:div, value, :class => "flash #{key}") %>
+	<% end %>
+</section>
+
+
+
+<%= yield %>
+
+<div style="clear:both"></div>
+
+
+<%= render 'layouts/footer' %>
+
+
+	<% if Rails.env.development? %>
 	<%= debug(params) %>
-<% end %>
-
+	<%= debug(session)%>
+	<% end %>
 </body>
 </html>
+
+

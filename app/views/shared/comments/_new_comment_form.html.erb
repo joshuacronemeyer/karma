@@ -1,0 +1,30 @@
+<div class="new_comment_form">
+
+	<% @new_comment = Comment.new %>
+	<% @new_comment.notice_id = notice_item.id %>
+
+	<%= form_for @new_comment do |f| %>
+		<%= f.hidden_field :notice_id, :value => @new_comment.notice_id %>
+
+	<div class="new_comment_form_title">
+		<div class="field">
+			<%= f.label :comment, " add comment:" %><br />
+		</div>			
+	</div>
+
+	<div class="new_comment_form_input">
+		<div class="field">
+			<%= f.text_area :comment, :size => "25x4" %>
+		</div>
+	</div>
+
+	<div class="new_comment_form_submit">
+		<div class="actions">
+			<%= f.submit "Post" %>
+		</div>
+	</div>
+	
+	<% end %>
+
+	
+</div>

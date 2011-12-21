@@ -6,7 +6,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @title = @user.name
-    @user_posts = @user.notices.all if @user.notices.count > 0
+    @user_posts = []
+    @user_posts << @user.notices.all if @user.notices.count > 0
     @user_posts << @user.comments.all if @user.comments.count > 0 
     @user_posts << @user.karma_grants.all if @user.karma_grants.count > 0
     if @user_posts != nil
@@ -57,13 +58,19 @@ class UsersController < ApplicationController
   
   def toggle_admin    
     @user = User.find(params[:id])
-    
     if current_user.admin?
-    @user.toggle!(:admin)
-    @user.admin? ? flash[:notice] = "User made admin" : flash[:notice] = "User admin revoked"
+  
+      if @user != current_user
+        @user.toggle!(:admin)
+        flash[:notice] = (@user.admin? ? "User made admin" : "User admin revoked")
+      else
+        flash[:error] = "Admins can't revoke their own status"
+      end
+
     else
-      flash[:error] = "Not authorized!"
+      flash[:error] = "Not authorized!"      
     end
+  
     redirect_to :action => :index
   end
   

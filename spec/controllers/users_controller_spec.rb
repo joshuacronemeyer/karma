@@ -28,9 +28,7 @@ describe UsersController do
         third = Factory(:user, :name => Faker::Name.name, :email => "another@example.net")
         
         @users = [@user, second, third]
-        30.times do
-          @users << Factory(:user, :name => Faker::Name.name, :email => Factory.next(:email))
-        end
+
         
       end
         
@@ -52,6 +50,9 @@ describe UsersController do
       end
       
       it "should paginate users" do
+        30.times do
+          @users << Factory(:user, :name => Faker::Name.name, :email => Factory.next(:email))
+        end
         get :index
         response.should have_selector("div.pagination")
         response.should have_selector("span.disabled", :content => "Previous")
@@ -109,136 +110,166 @@ describe UsersController do
 
   describe "GET 'show'" do
     
-    before(:each) do
-      @user = Factory(:user)
-      test_sign_in(@user)
-    end
-    
-    it "should be successful" do
+    describe "for non-signed-in users" do
+
+      before(:each) do
+        @user = Factory(:user)
+      end
+      
+      it "should deny access" do
         get :show, :id => @user
-        response.should be_success
+        response.should redirect_to(new_user_session_path)
+      end
+      
     end
     
-    it "should find the right user" do
+    describe "for signed-in users" do
+      
+      before(:each) do
+           @user = Factory(:user)
+           test_sign_in(@user)
+           @notice = Factory(:notice, :user_id => @user.id)
+      end
+    
+      it "should be successful" do
+          get :show, :id => @user
+          response.should be_success
+      end
+    
+      it "should find the right user" do
+          get :show, :id => @user
+          assigns(:user).should == @user
+      end
+    
+      it "should have the right title" do
         get :show, :id => @user
-        assigns(:user).should == @user
-    end
+        response.should have_selector("title", :content => @user.name)
+      end
     
-    it "should have the right title" do
-      get :show, :id => @user
-      response.should have_selector("title", :content => @user.name)
-    end
+      it "should paginate the user's feed items" do
+        @notices = []
+        30.times do
+           @notices << Factory(:notice, :user_id => @user.id, 
+                                        :content => Faker::Lorem.sentence(3),
+                                        :self_doer => true)
+        end
+        @comments = []
+        @notices.each do |n|
+          2.times do
+            @comments << Factory(:comment, :user_id => @user.id,
+                                           :comment => Faker::Lorem.sentence(5),
+                                           :notice_id => n.id)
+          end
+        end
+        get :show, :id => @user
+        response.should have_selector("div.pagination")
+        response.should have_selector("span.disabled", :content => "Previous")
+        response.should have_selector("a", :href => "/users/1?page=2", 
+                                           :content => "2")
+        response.should have_selector("a", :href => "/users/1?page=2", 
+                                           :content => "Next")
+      end
+                                         
+      it "should include the user's name" do
+        get :show, :id => @user
+        response.should have_selector("span", :content => @user.name)
+      end
     
-    it "should paginate the user's feed items"
-    
-    it "should include the user's name" do
-      get :show, :id => @user
-      response.should have_selector("h3", :content => @user.name)
-    end
-    
-    it "should have a profile image" do
-      get :show, :id => @user
-      response.should have_selector("img", :class => "gravatar")
-    end
+      it "should have a profile image" do
+        get :show, :id => @user
+        response.should have_selector("img", :class => "gravatar")
+      end
 
-    it "should show the user's notices"
+      it "should show the user's notices" do
+        @notice.self_doer = true
+        @notice.save
+        get :show, :id => @user
+        response.should have_selector("div.notice_description")
+        response.should have_selector("div.notice_doers", :content => @user.name)
+      end
+       
+      it "should show the user's comments" do
+        @comment = Factory(:comment, :user_id => @user.id, :notice_id => @notice.id)
+        get :show, :id => @user
+        response.should have_selector("div.notice_comments")
+        response.should have_selector("div.comment_item", :content => @user.name)
+      end
     
-    it "should show the user's comments"
+      it "should not show the same notice twice if the user has added comments or karma_grants" do
+        @comment = Factory(:comment, :user_id => @user.id, :notice_id => @notice.id)
+        get :show, :id => @user.id
+        response.should_not have_selector("div.user_show_item_description", :content => "posted a notice")
+        response.should_not have_selector("div.user_show_item_description", :content => "commented on")
+      end
+      
+      it "should show delete links for a user's own notices" do 
+        get :show, :id => @user
+        response.should have_selector("a", :class=>"notice_delete_link", :content => "delete")
+      end
     
-    describe "for a user's own page" do
-
-      it "should show a user's karma grants"
-
-      it "should show delete links for notices"
+      it "should show delete links for a user's own comments" do
+        @comment = Factory(:comment, :user_id => @user.id, :notice_id => @notice.id)
+        get :show, :id => @user
+        response.should have_selector("a", :class=>"comment_delete_link", :content => "delete")
+      end
+    
+      describe "karma points" do
       
-      it "should show delete links for comments"
+        before(:each) do
+          @second_user = Factory(:user, :name => Faker::Name.name, :email => "another@example.com")
+        
+          @second_user_notice = Factory(:notice, :user_id => @second_user.id, 
+                                        :content => Faker::Lorem.sentence(3),
+                                        :self_doer => true)
+                                      
+          @karma_grant = Factory(:karma_grant, :user_id => @user.id,
+                                               :notice_id => @second_user_notice.id)
+        end
       
-      it "should show revoke links for karma grants"
+        it "should show karma grants for the user's notices" do 
+          get :show, :id => @second_user
+          response.should have_selector("div.notice_karma_points", :content => "total karma")
+        end
+      
+        describe "for a user's own page" do
 
+          it "should show a user's own karma grants" do
+            get :show, :id => @user
+            response.should have_selector("div.user_show_item_description", :content => "granted")
+          end
+        
+          it "should show revoke links for a user's own karma_grants" do
+            get :show, :id => @user
+            response.should have_selector("a", :class=>"karma_revoke_link", :content => "revoke")
+          end
+
+        end
+    
+        describe "for another user's page" do
+
+          it "should not show another user's karma grants" do
+            third_user = Factory(:user, :name => Faker::Name.name, :email => "another@example.mil")
+            third_karma_grant = Factory(:karma_grant, :user_id => third_user.id,
+                                                        :notice_id => @user.notices.first)
+            get :show, :id => third_user
+            response.should_not have_selector("div.user_show_item_description", :content => "granted")
+          end
+
+        end
+
+      end 
+    
     end
-    
-    describe "for another user's page" do
-
-      it "should not show a user's karma grants"
-      
-      it "should not show delete links for notices"
-      
-      it "should not show delete links for comments"
-      
-      it "should not show revoke links for karma grants"
-      
-    end
-      
+  
   end
    
   describe "GET 'edit'" do 
-    
-    before(:each) do
-      @user = Factory(:user)
-      test_sign_in(@user)
-    end
-    
-    it "should be successful" do
-      get :edit, :id => @user
-      response.should have_selector("title", :content => "Edit")
-    end
-    
-    it "should have a link to change the Gravatar" do
-      get :edit, :id => @user
-      gravatar_url = "http://gravatar.com/emails"
-      response.should have_selector("a", :href => gravatar_url,
-                                         :content => "change")
-    end
-    
-  end
-  
-  describe "toggle_admin" do
-    
-    describe "for non-admins" do
-
-      before(:each) do
-        @user = test_sign_in(Factory(:user))
-        @second = Factory(:user, :name => Faker::Name.name, :email => "another@example.com", :admin => false)
-      end
-      
-      it "should not allow non-admins to make admins" do
-        get :toggle_admin, :id => @second.id
-        @second.admin?.should_not be_true
-      end
-      
-    end
-    
-    describe "for admins" do
-      
-      before(:each) do
-        @admin = Factory(:user, :name => "admin", :email => "admin@example.com", :admin => true)
-        test_sign_in(@admin)
-        @second = Factory(:user, :name => Faker::Name.name, :email => "another@example.com", :admin => false)
-        @third = Factory(:user, :name => Faker::Name.name, :email => "another@example.net", :admin => true)
-      end
-
-      it "should allow admins to make other admins" do
-        get :toggle_admin, :id => @second.id
-        User.find(@second.id).should be_admin
-      end
-       
-      it "should allow admins to revoke admin status" do
-        get :toggle_admin, :id => @third.id
-        User.find(@third.id).should_not be_admin
-      end
-      
-    end
-    
-  
-  end
-  
-  describe "authentication of edit page" do
-    
-    before (:each) do
-      @user = Factory(:user)
-    end
-    
+   
     describe "for non-signed-in users" do
+
+      before(:each) do
+        @user = Factory(:user)
+      end
       
       it "should deny access" do
         get :edit, :id => @user
@@ -247,23 +278,98 @@ describe UsersController do
       
     end
     
-    describe "for signed-in user" do
+    describe "for the correct user" do
       
-      before (:each) do
-        wrong_user = Factory(:user, :name => "Wrong User", :email => "user@example.net")
-        test_sign_in(wrong_user)
-      end
-      
-      it "should not allow users to edit others' profiles" do
-        get :edit, :id => @user
-        response.should redirect_to(root_path)
+      before(:each) do
+        @user = Factory(:user)
+        test_sign_in(@user)
       end
     
+      it "should be successful" do
+        get :edit, :id => @user
+        response.should have_selector("title", :content => "Edit")
+      end
+    
+      it "should have a link to change the Gravatar" do
+        get :edit, :id => @user
+        gravatar_url = "http://gravatar.com/emails"
+        response.should have_selector("a", :href => gravatar_url,
+                                           :content => "change")
+      end
+    
+    end
+  
+    describe "for the incorrect user" do
+    
+       before (:each) do
+          @user = Factory(:user)
+       end
+
+        describe "when not signed-in" do
+
+          it "should deny access" do
+            get :edit, :id => @user
+            response.should redirect_to(new_user_session_path)
+          end
+
+        end
+
+        describe "when signed-in" do
+
+          before (:each) do
+            wrong_user = Factory(:user, :name => "Wrong User", :email => "user@example.net")
+            test_sign_in(wrong_user)
+          end
+
+          it "should not allow users to edit others' profiles" do
+            get :edit, :id => @user
+            response.should redirect_to(root_path)
+          end
+          
+        end
+    end
+  
+  end
+  
+  describe "GET 'toggle_admin'" do
+    
+    before(:each) do
+      @user = Factory(:user, :admin => false)
+    end
+    
+    describe "for admins" do
+      
+      before(:each) do
+        @admin = Factory(:user, :admin => true, :name => "admin", :email => "admin@example.com")
+        test_sign_in(@admin)
+      end
+      
+      it "should change the user's admin status" do
+        get :toggle_admin, :id => @user.id
+        @user = User.find(@user.id)
+        @user.admin?.should be_true
+      end
+    
+      it "should not allow admin to change their own status" do
+        get :toggle_admin, :id => @admin.id
+        @admin = User.find(@admin.id)
+        @admin.admin?.should be_true
+      end
       
     end
     
+    describe "for non-admins" do
+      
+     it "should not change the user's admin status" do
+        test_sign_in(@user)
+        get :toggle_admin, :id => @user
+        @user.admin?.should_not be_true
+     end
+
+    end
+    
   end
-  
+   
   describe "DELETE 'destroy'" do
     
     before(:each) do

@@ -1,0 +1,14 @@
+<% @comment_items = notice_item.comments.all %>
+<div class="comment_feed">
+
+	<% if limit && @comment_items.count > limit %>
+		<% @comment_items[0..(limit-1)].each do |c| %>
+			<%= render 'shared/comments/comment_item', :comment_item => c %>
+		<% end %>
+		<%= link_to "view all...", "notices/#{notice_item.id}" %>
+
+	<% else %>
+		<%= render :partial => 'shared/comments/comment_item', :collection => @comment_items %>
+
+	<% end %>
+</div>

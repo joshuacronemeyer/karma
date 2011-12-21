@@ -16,6 +16,12 @@ class KarmaGrant < ActiveRecord::Base
 
   belongs_to :notice
   belongs_to :user
+  
+  validates( :notice_id, :presence => true )
+  validates( :user_id, :presence => true )
+  validates( :karma_points, :presence => true, 
+             :numericality => {:greater_than => 0, :less_than => 4} )
+             
 
   def already_granted?
     Notice.find(notice_id).karma_grants.each do |k|

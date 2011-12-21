@@ -1,0 +1,87 @@
+class User {
+
+object methods:
+
+	int total_karma
+	
+	bool admin
+
+	array private_posts
+	
+	array public_posts
+	
+	array karma_grants
+	
+	array notices
+	
+	void post_notice(content, doers, self_doer, comment)
+
+	array comments
+
+	void add_comment(notice, comment)
+	
+	void grant_karma(notice, points)
+	
+	void revoke_karma(notice)
+	
+	
+}
+
+
+
+class Notice {
+
+class methods:
+
+	open_notices
+	
+	closed_notices
+
+
+object methods:
+
+	int total_karma
+
+	array karma_grants
+	
+	array comments
+	
+	User user
+
+}
+
+class Comment {
+
+object methods:
+
+	User user
+	
+	void destroy
+
+}
+
+class KarmaGrant {
+
+object methods:
+	
+	User user
+	
+	void destroy
+	
+}
+
+	
+	
+notice possibilites:
+
+
+notice w/ no comment
+	
+comment alone
+
+karma_grant alone	
+
+
+notice w/ comment
+
+comment w/ karma_grant

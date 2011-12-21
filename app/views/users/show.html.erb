@@ -2,6 +2,8 @@
 
 <% if @user_posts != nil %>
 	
+	<div class="feed_header">Recent activity:</div>
+		
 	<div class="feed">
 
 		<%= will_paginate @user_posts %>
@@ -15,21 +17,15 @@
 					<div class="user_show_item_description">
 						<%#= (@user == current_user) ? "You" : @user.name %> posted a notice:
 					</div>
-						<%= render 'shared/notices/notice_item', :notice_item => post%>
+						<%= render 'shared/notices/notice_description', :notice_item => post%>
 				
 				<% elsif post.class == KarmaGrant && @user == current_user %>
 					<div class="user_show_item_description">
-						<!--You--> granted <%= pluralize(post.karma_points, "karma point") %> 
-						to the following notice:
+						<!--You--> granted karma to the following notice:
 					</div>
 					
 					<%= render 'shared/notices/notice_description', 
 								:notice_item => Notice.find(post.notice_id)%>
-
-					<div class="notice_date">
-						granted on 
-						<%=post.created_at.localtime.to_formatted_s(:long_ordinal) %>
-					</div>
 				
 				<% elsif post.class == Comment %>	
 					<div class="user_show_item_description">

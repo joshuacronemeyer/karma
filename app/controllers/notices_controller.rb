@@ -1,6 +1,8 @@
 class NoticesController < ApplicationController
 
-#  before_filter :authenticate_user!
+  include ApplicationHelper
+
+  before_filter :authenticate_user!
 
 
   def create
@@ -14,17 +16,36 @@ class NoticesController < ApplicationController
           @comment.save
         end
         flash[:success] = "notice added!"
-        redirect_to root_path
+ 
       else
         flash[:error] = "error!"
-       redirect_to root_path       
       end
+      redirect_to root_path
+    
   end
 
   def show
+    @notice = Notice.find(params[:id])
+    @title = first_words(@notice.content, 3)
+    if @notice.content.split(/\W+/).count > 3
+      @title += "..."
+    end  
   end
 
   def destroy
+    @notice = Notice.find(params[:id])
+    if @notice.user_id == current_user.id
+ #     @notice.karma_grants.each { |kg| kg.destroy }
+  #    @notice.comments.each { |c| c.destroy }
+      @notice.destroy
+      flash[:success] = "Notice deleted."
+    else
+      flash[:error] = "Not authorized."
+    end
+    redirect_back_or root_path
+
+    
   end
+
 
 end

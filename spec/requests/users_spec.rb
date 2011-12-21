@@ -88,6 +88,28 @@ describe "Users" do
       it "should have a flash message" 
       
     end
+
+  end
+  
+  describe "self-delete account" do
     
+    it "should ask for confirmation"
+
+    it "should delete the user"
+    
+    it "should render the sign-up page"
+
+  end
+  
+  describe "admin-delete account" do
+    
+    it "should ask for confirmation"
+    
+    it "should delete the user"
+    
+    it "should render the user index page"
+    
+  end
+  
   
 end

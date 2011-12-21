@@ -6,6 +6,27 @@ Factory.define :user do |user|
   
 end
 
+Factory.define :notice do |notice|
+  notice.content             "Notice notice notice"
+  notice.doers               "KidA KidB"
+  notice.user_id             1
+end
+
+Factory.define :comment do |comment|
+  comment.comment           "Comment comment commment"
+
+end
+
+Factory.define :karma_grant do |karma_grant|
+  karma_grant.karma_points  2
+  karma_grant.user_id       1
+  karma_grant.notice_id     1
+  
+end
+
 Factory.sequence :email do |n|
   "person-#{n}@example.com"
+  
 end
+
+

@@ -1,2 +1,11 @@
-<h1>Notice#show</h1>
-<p>Find me in app/views/notice/show.html.erb</p>
+<div class="notice_item">
+
+	<%= render 'shared/notices/notice_description', 
+			:notice_item => @notice %>	
+
+	<div class="notice_comments">
+		<%= render 'shared/comments/comment_feed', :notice_item => @notice, :limit => nil %>
+		<%= render 'shared/comments/new_comment_form', :notice_item => @notice  %>
+	</div>
+
+</div>

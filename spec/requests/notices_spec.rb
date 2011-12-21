@@ -18,4 +18,25 @@ describe "Notices" do
     
   end
   
+  describe "destruction" do
+    
+    describe "failure" do
+      
+      it "should not destroy the notice"
+      
+      it "should render the last viewed page"
+      
+    end
+    
+    describe "success" do
+      
+      it "should destroy the notice"
+      
+      it "should render the last viewed page"
+      
+    end
+    
+  end
+  
+  
 end

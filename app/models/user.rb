@@ -52,9 +52,15 @@ class User < ActiveRecord::Base
 #                        :confirmation => true,
 #                        :length => { :within =>  (6..40) } )
 
-  has_many :notices
-  has_many :comments
-  has_many :karma_grants
+  has_many :notices, :dependent => :destroy
+  has_many :comments, :dependent => :destroy
+  has_many :karma_grants, :dependent => :destroy
+  
+  def private_posts
+  end
+  
+  def public_posts
+  end
   
 private
 

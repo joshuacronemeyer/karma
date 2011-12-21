@@ -28,11 +28,12 @@ namespace :db do
     end
   end
   
-  def make_content
+  def make_content    
     10.times do |n|
       @user = User.find(1+rand(15))
       make_notice(@user)
       sleep(1)
+      puts "first loop"
     end
     
     250.times do |n|
@@ -43,8 +44,12 @@ namespace :db do
         make_comment(User.find(1+rand(15)))
       when 7 
         make_notice(User.find(1+rand(15)))
-      end
-      
+      end   
+      sleep(1)
+    end
+    
+    8.times do |n|
+      make_notice(User.first)
       sleep(1)
     end
     
@@ -52,11 +57,10 @@ namespace :db do
   
   def make_notice(user)
     @notice = user.notices.new
-    @notice.description = Faker::Lorem.sentence(3)
+    @notice.content = Faker::Lorem.sentence(3)
     @notice.self_doer = (user.id < 4)
     @notice.doers = Faker::Name.name + " " + Faker::Name.name
     @notice.save
-    puts "made notice #{@notice.id}"
   end
   
   def make_comment(user)
@@ -65,30 +69,27 @@ namespace :db do
     @comment.comment = Faker::Lorem.sentence(6)
     @comment.notice_id = @notice_ids[rand(@notice_ids.count)]
     @comment.save
-    puts "made comment #{@comment.id}"
   end
   
   def make_karma_grant()
     @user = User.find(1+rand(30))
     @notice_ids = Notice.all.each.collect {|n| n.id }
-    @notice = Notice.find(@notice_ids[rand(@notice_ids.count)])
-
-    #make sure we don't double-grant 
-    until @notice.karma_grants.map{|kg| kg.user_id}.include?(@user.id) == false
-      @notice = Notice.find(@notice_ids[rand(@notice_ids.count)])
-      puts "fetching a new notice to avoid double-grant"
-    end
     
+    #make sure we don't double-grant or self-grant
+    loop {
+      @notice = Notice.find(@notice_ids[rand(@notice_ids.count)])  
+      break if ((@notice.karma_grants.map{|kg| kg.user_id}.include?(@user.id) == false) && (@notice.user_id != @user.id))              
+    }
+
     @karma_grant = @user.karma_grants.new
     @karma_grant.karma_points = 1+rand(3)
-    @karma_grant.notice_id = @notice_ids[rand(@notice_ids.count)]
+    @karma_grant.notice_id = @notice.id
     @karma_grant.save
-    puts "made karma_grant #{@karma_grant.id}"
   end
-  
-    
-    
-
 
   
+  
+
+
+
 end

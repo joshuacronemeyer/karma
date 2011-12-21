@@ -1,23 +1,19 @@
 
 finish user show page
-write notice show page
-add front-page pagination
-implement comment trimming
-remove tables
-
-implement user self-views
-implement admin control panel
-create test suite
-implement user authentication
-implememt username login
 implement comment and karma_grant deletion
-complete devise email support
-implement un-claimed notices
-stylize notice items
-stylize overall site
-implement recurring notices
-implement proper user tagging
-remove unneeded routes (action limiters for resources)
+write notice show page
+implement comment trimming
 implement Ajax interface
-produce Help documentation
+
+implement un-claimed notices
+implement recurring notices
+
+
+
+implement proper user tagging
+implement admin control panel
+complete devise email support
 implement mailing list functionality
+remove unneeded routes (action limiters for resources)
+stylize
+produce Help documentation

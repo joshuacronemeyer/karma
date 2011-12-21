@@ -32,7 +32,7 @@ module ApplicationHelper
      sentence = I18n.t("errors.messages.not_saved",
                         :count => resource.errors.count,
                         :resource => resource.class.model_name.human.downcase)
-  end
+   end
   
     html = <<-HTML
       <div id="error_explanation">
@@ -43,20 +43,25 @@ module ApplicationHelper
 
     html.html_safe
   end
-  
+
+  def first_words(string, num)
+    words = string.split(/\W+/)
+    words[0..(words.count >= num ? num - 1 : words.count - 1)].join(' ')
+  end
+    
   # These make sure the Devise links work outside of the Devise controller
       
-    def resource_name
-      :user
-    end
+  def resource_name
+    :user
+  end
 
-    def resource
-      @resource ||= User.new
-    end
+  def resource
+    @resource ||= User.new
+  end
 
-    def devise_mapping
-      @devise_mapping ||= Devise.mappings[:user]
-    end
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
 
-  
+ 
 end

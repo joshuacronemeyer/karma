@@ -16,19 +16,21 @@ group :development, :test do
 end
 
 group :production do
-  gem 'pg'
+#  gem 'pg'
 end
 
 group :development do
+	gem 'rspec-rails'
 	gem 'annotate', :git => 'git://github.com/ctran/annotate_models.git'
 	gem 'faker', '0.3.1'
 end
 
 group :test do
-	gem 'rspec-rails', '2.6.1'
+	gem 'rspec-rails'
 	gem 'webrat', '0.7.1'
 	gem 'factory_girl_rails'
 	gem 'spork'
+	gem 'simplecov', :require => false
 end
 
 

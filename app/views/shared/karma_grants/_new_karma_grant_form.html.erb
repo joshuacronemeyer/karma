@@ -1,0 +1,47 @@
+<div class="new_karma_grant_form">
+	
+	<% @new_karma_grant = KarmaGrant.new %>
+	<% @new_karma_grant.notice_id = notice_item.id %>
+
+	<%= form_for @new_karma_grant do |f| %>
+		<%= f.hidden_field :notice_id, :value => @new_karma_grant.notice_id %>
+				
+		<div class="new_karma_grant_form_header">grant karma:</div>
+
+		<div class="new_karma_grant_form_point">
+			<div class="field">
+				<%= f.label(:karma_points, "1" )%>
+			</div>
+			<div class="field">
+				<%= f.radio_button(:karma_points, 1)%>
+			</div>
+		</div>
+
+		<div class="new_karma_grant_form_point">
+			<div class="field">
+				<%= f.label(:karma_points, "2" )%>
+			</div>
+			<div class="field">
+				<%= f.radio_button(:karma_points, 2)%>
+			</div>
+		</div>
+
+		<div class="new_karma_grant_form_point">
+			<div class="field">
+				<%= f.label(:karma_points, "3" )%>
+			</div>
+			<div class="field">
+				<%= f.radio_button(:karma_points, 3)%>
+			</div>
+		</div>
+
+		<div class="new_karma_grant_form_submit">
+			<div class="actions">
+				<%= f.submit "grant" %>
+			</div>
+		</div>
+
+	<% end %>
+
+	
+</div>

@@ -1,8 +1,9 @@
 .container {
-	width: 960px;
+	width: 948px;
 	margin-left:auto;
 	margin-right:auto;
-	background-color: #f3f3f3;
+	background-color: #f3f3f3; 
+/*	background-color: #f2f3e5; */
 	padding: 6px;
 }
 
@@ -17,6 +18,23 @@ header {
 	margin-bottom: 24px;
 }
 
+ section.main {
+	float: left;
+	width: 604px;
+	margin-left: 4px;
+	margin-right: 4px;
+	padding: 6px;
+
+}
+
+section.sidebar {
+	float: left;
+	width: 304px;
+	background-color: #cfdcdb;
+	margin-right: 4px;
+	margin-left: 4px;
+	padding: 6px;
+}
 footer {
 	margin-top: 24px;
 	text-align:center;
@@ -148,13 +166,6 @@ height:16px;
 
 
 
-/* Main section */
-
-.main {
-	margin-left:12px;
-	width:610px;
-}
-
 /* Generic form */
 
 .field {
@@ -232,8 +243,13 @@ height:16px;
 .notice_date {
 	font-style:italic;
 	font-size:small;
+	display: inline;
 }
 
+.notice_show_link {
+	font-size:small;
+	margin-left:.5em;
+}
 .notice_karma_points {
 	font-size:smaller;
 	font-weight:bold;
