@@ -9,7 +9,11 @@ Karma::Application.routes.draw do
     match '/users/sign_out' => 'devise/sessions#destroy'
   end
   
-  resources :users 
+  resources :users do
+#    collection do
+      match :toggle_admin, :via => :post,  :action => :toggle_admin
+#    end
+  end
   
   # need to add action limiters for resources
   
@@ -20,7 +24,7 @@ Karma::Application.routes.draw do
   resources :karma_grants
   
 
-  match '/users/:id/toggle_admin/' => 'users#toggle_admin', :via => :get
+#  match '/users/:id/toggle_admin/' => 'users#toggle_admin', :via => :get
   match '/about', :to => 'pages#about'
   match '/help', :to => 'pages#help'
   root :to => 'pages#home'

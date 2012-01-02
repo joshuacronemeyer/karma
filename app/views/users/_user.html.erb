@@ -8,10 +8,14 @@
 <% if current_user.admin? %>	
 	
 	<% if user.admin? %>
-    	(<a href="/users/<%= "#{user.id}" %>/toggle_admin">Revoke</a>)	
-
+		(<%= link_to "Revoke admin", user_toggle_admin_path(user),
+								   :method => :post,
+								   :title => "Revoke admin" %>)
 	<% else %>
-		(<a href="/users/<%= "#{user.id}" %>/toggle_admin">Make admin</a>)
+
+ 		(<%= link_to "Make admin", user_toggle_admin_path(user), 
+						   :method => :post,
+						   :title => "Make admin" %>)
 	
 	<% end %>
 	

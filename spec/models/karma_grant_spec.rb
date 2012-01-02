@@ -18,7 +18,7 @@ describe KarmaGrant do
     @user = Factory(:user)
     @second_user = Factory(:user, :name => "Second", :email => "second@example.com")
     @second_notice = Factory(:notice, :user => @second_user)
-    @attr = {:notice => @second_notice, :user => @user}
+    @attr = {:notice_id => @second_notice.id, :user_id => @user.id, :karma_points => 2}
   end
   
   it "should create a new instance given valid attributes" do
@@ -52,12 +52,12 @@ describe KarmaGrant do
   describe "validations" do
     
     it "should require a user id" do
-      no_user_kg = KarmaGrant.new(@attr.merge(:user => nil))
+      no_user_kg = KarmaGrant.new(@attr.merge(:user_id => nil))
       no_user_kg.should_not be_valid
     end
     
     it "should require a notice id" do
-      no_notice_kg = KarmaGrant.new(@attr.merge(:notice => nil))
+      no_notice_kg = KarmaGrant.new(@attr.merge(:notice_id => ""))
       no_notice_kg.should_not be_valid
     end
     
@@ -68,12 +68,13 @@ describe KarmaGrant do
     
     it "should not allow users to grant karma to their own notices" do
       @notice = Factory(:notice, :user => @user)
-      self_kg = KarmaGrant.new(@attr.merge(:notice => @notice))
+      self_kg = KarmaGrant.new(@attr.merge(:notice_id => @notice.id))
       self_kg.should_not be_valid
     end
     
     it "should not allow users to grant karma to the same notice twice" do
-      kg1 = Factory(:karma_grant, :notice => @second_notice, :user => @user)
+      kg1 = Factory(:karma_grant, :notice_id => @second_notice.id, 
+                    :user_id => @user.id)
       kg2 = KarmaGrant.new(@attr)
       kg2.should_not be_valid
     end

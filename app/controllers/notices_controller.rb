@@ -4,39 +4,30 @@ class NoticesController < ApplicationController
 
   before_filter :authenticate_user!
 
-
   def create
-   @notice = current_user.notices.new(params[:notice])
-      if @notice.save
-        if params[:comment] != ""
-          @comment = @notice.comments.new
-          @comment.original_comment = true
-          @comment.user_id = current_user.id
-          @comment.comment = params[:comment]
-          @comment.save
-        end
-        flash[:success] = "notice added!"
- 
-      else
-        flash[:error] = "error!"
-      end
-      redirect_to root_path
-    
+    @notice = current_user.notices.new(params[:notice],
+                                      :open => false,
+                                      :display_title => trunc_title(params[:notice][:content], 3))
+    if @notice.save
+      @notice.comments.create(:user_id => current_user.id,
+                              :comment => params[:comment])
+      flash[:success] = "notice added"
+    end
+  redirect_to root_path  
   end
 
   def show
     @notice = Notice.find(params[:id])
-    @title = first_words(@notice.content, 3)
-    if @notice.content.split(/\W+/).count > 3
-      @title += "..."
-    end  
+    @title = @notice.display_title
+ #   @title = first_words(@notice.content, 3)
+#    if @notice.content.split(/\W+/).count > 3
+#      @title += "..."
+#    end  
   end
 
   def destroy
     @notice = Notice.find(params[:id])
-    if @notice.user_id == current_user.id
- #     @notice.karma_grants.each { |kg| kg.destroy }
-  #    @notice.comments.each { |c| c.destroy }
+    if @notice.user.id == current_user.id
       @notice.destroy
       flash[:success] = "Notice deleted."
     else

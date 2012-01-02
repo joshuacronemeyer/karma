@@ -11,14 +11,12 @@
 #  updated_at          :datetime
 #  content             :string(255)
 #  self_doer           :boolean
+#  display_title       :string(255)
 #
 
 class Notice < ActiveRecord::Base
   
-  attr_accessible :content
-  attr_accessible :doers
-  attr_accessible :self_doer
-  attr_accessible :open
+  attr_accessible :content, :doers, :self_doer, :open, :display_title
   
   belongs_to :user
   
@@ -30,14 +28,17 @@ class Notice < ActiveRecord::Base
   
   default_scope :order => 'notices.created_at DESC'
   
-  # need before_filter signed_in?
-  
-  def total_karma
-    @karma_points = 0
-    karma_grants.each do |k|
-      @karma_points += k.karma_points
-    end
-    @karma_points    
+  def self.open_notices
+    self.where(:open => true)
   end
   
+  def self.closed_notices
+    self.where(:open => false)
+  end
+
+  def total_karma
+    karma_grants.map{ |k| k.karma_points }.sum
+  end
+  
+
 end

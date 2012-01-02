@@ -1,10 +1,13 @@
 <div class="new_karma_grant_form">
 	
-	<% @new_karma_grant = KarmaGrant.new %>
-	<% @new_karma_grant.notice_id = notice_item.id %>
+	<%# @new_karma_grant = KarmaGrant.new(:notice_id => notice_item.id) %>
+	<%# @new_karma_grant.notice_id = notice_item.id %>
 
-	<%= form_for @new_karma_grant do |f| %>
-		<%= f.hidden_field :notice_id, :value => @new_karma_grant.notice_id %>
+	<%= form_for KarmaGrant.new do |f|%>
+
+	<%#= form_for @new_karma_grant do |f| %>
+		<%= f.hidden_field :notice_id, :value => notice_id %>
+		<%#= f.hidden_field :user_id, :value => current_user.id %>
 				
 		<div class="new_karma_grant_form_header">grant karma:</div>
 

@@ -18,4 +18,8 @@ class Comment < ActiveRecord::Base
   
   attr_accessible :id, :original_comment, :notice_id, :comment, :user_id
   
+  validates( :user_id, :presence => true)
+  validates( :notice_id, :presence => true)
+  validates( :comment, :presence => true)
+  
 end

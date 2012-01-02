@@ -16,16 +16,15 @@
 		Posted by: <%= link_to poster.name, user_path(poster), :class => "user_show_link" %>
 	</div>
 
-	<% if User.find(notice_item.user_id) != current_user %>
+	<% if poster != current_user %>
 		<% if notice_item.karma_grants.map{|kg| kg.user_id}.include?(current_user.id)%>
-			You granted <%= pluralize(notice_item.karma_grants.find_by_user_id(current_user.id).karma_points,
-			 							"karma point") %> 
+		<% karma_grant = notice_item.karma_grants.find_by_user_id(current_user.id) %>
+			You granted <%= pluralize(karma_grant.karma_points, "karma point") %> 
 			<div class="notice_date">
 				granted on 
-				<%= notice_item.created_at.localtime.to_formatted_s(:long_ordinal) %>
+				<%= karma_grant.created_at.localtime.to_formatted_s(:long_ordinal) %>
 			</div>
-			<%= link_to "revoke", notice_item.karma_grants.find_by_user_id(current_user.id), 					
-											   :method => :delete,
+			<%= link_to "revoke", karma_grant, :method => :delete,
 			 								   :confirm => "Are you sure you want to revoke this karma?", 
 											   :title => "Revoke",
 											   :class => "karma_revoke_link" %>
@@ -33,14 +32,15 @@
 
 		<% else %>		
 			<%= render 'shared/karma_grants/new_karma_grant_form', 
-					:notice_item => notice_item  %>
+					:notice_id => notice_item.id  %>
 		<% end %>
 	<% end %>
 	
 	
 	<div class="notice_date">
-		posted on 
-		<%= notice_item.created_at.localtime.to_formatted_s(:long_ordinal) %>
+	<!--	posted on  --> 
+		<%#= notice_item.created_at.localtime.to_formatted_s(:long_ordinal) %>
+		<%= time_ago_in_words(notice_item.created_at.localtime)%> ago
 	</div>
 	
 	<%= link_to ">>", notice_path(notice_item), :class => "notice_show_link", 

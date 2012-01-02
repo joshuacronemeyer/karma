@@ -7,11 +7,7 @@ module ApplicationHelper
   
   def title
     base_title = "Karma"
-    if @title.nil?
-      base_title
-    else
-      "#{base_title} | #{@title}"
-    end
+    @title.nil? ? base_title : "#{base_title} | #{@title}"
   end
   
   def error_messages!(context="")
@@ -44,12 +40,14 @@ module ApplicationHelper
     html.html_safe
   end
 
-  def first_words(string, num)
+  def trunc_title(string, num)
     words = string.split(/\W+/)
-    words[0..(words.count >= num ? num - 1 : words.count - 1)].join(' ')
+    if words.count >= num
+      return words[0..num-1].join(' ') + "..."
+    else
+      return words[0..words.count - 1].join(' ')
+    end     
   end
-    
-  # These make sure the Devise links work outside of the Devise controller
       
   def resource_name
     :user
@@ -62,6 +60,7 @@ module ApplicationHelper
   def devise_mapping
     @devise_mapping ||= Devise.mappings[:user]
   end
+
 
  
 end

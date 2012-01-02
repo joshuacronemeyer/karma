@@ -1,5 +1,6 @@
 require 'faker'
-
+require './app/helpers/application_helper.rb'
+include ApplicationHelper
 # Fills the database with sample users, notices, comments, and karma_grants
 
 namespace :db do
@@ -33,7 +34,6 @@ namespace :db do
       @user = User.find(1+rand(15))
       make_notice(@user)
       sleep(1)
-      puts "first loop"
     end
     
     250.times do |n|
@@ -60,6 +60,8 @@ namespace :db do
     @notice.content = Faker::Lorem.sentence(3)
     @notice.self_doer = (user.id < 4)
     @notice.doers = Faker::Name.name + " " + Faker::Name.name
+    @notice.open = false
+    @notice.display_title = trunc_title(@notice.content, 3)
     @notice.save
   end
   

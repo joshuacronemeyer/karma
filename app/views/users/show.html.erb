@@ -1,6 +1,6 @@
 <%= render 'shared/user_id_header' %>
 
-<% if @user_posts != nil %>
+<% if @user_posts != [] %>
 	
 	<div class="feed_header">Recent activity:</div>
 		
@@ -11,34 +11,56 @@
 		<% @user_posts.each do |post| %>
 
 			<div class="user_show_item">
-
-				<% if post.class == Notice %>
-					<% @notice_item = post %>
-					<div class="user_show_item_description">
-						<%#= (@user == current_user) ? "You" : @user.name %> posted a notice:
-					</div>
-						<%= render 'shared/notices/notice_description', :notice_item => post%>
 				
-				<% elsif post.class == KarmaGrant && @user == current_user %>
+				<% if post.type == :notice %>
 					<div class="user_show_item_description">
-						<!--You--> granted karma to the following notice:
+						posted a notice:
 					</div>
-					
 					<%= render 'shared/notices/notice_description', 
-								:notice_item => Notice.find(post.notice_id)%>
+											:notice_item => post.notice %>				
 				
-				<% elsif post.class == Comment %>	
+				<% elsif post.type == :comment %>
 					<div class="user_show_item_description">
-						<%#= (@user == current_user) ? "You" : @user.name %>  
 						commented on the following notice:
 					</div>
-						<%= render 'shared/notices/notice_description', 
-									:notice_item => Notice.find(post.notice_id)%>
+					<%= render 'shared/notices/notice_description', 
+											:notice_item => post.notice%>
 					<div class="notice_comments">
-						<%= render 'shared/comments/comment_item', :comment_item => post %>
+					<%= render 'shared/comments/comment_item', 
+											:comment_item => post.comment %>
 					</div>
+					
+				<% elsif post.type == :notice_with_comment %>	
+					<div class="user_show_item_description">
+						posted and commented on the following notice:
+					</div>
+					<%= render 'shared/notices/notice_description', 
+											:notice_item => post.notice%>
+					<div class="notice_comments">
+					<%= render 'shared/comments/comment_item', 
+											:comment_item => post.comment %>
+					</div>
+					
+				<% elsif post.type == :karma_grant %>
+					<div class="user_show_item_description">
+						granted karma to the following notice:
+					</div>
+					<%= render 'shared/notices/notice_description', 
+											:notice_item => post.notice %>
+								
+				<% elsif post.type == :comment_with_karma_grant %>
+					<div class="user_show_item_description">
+						commented on and granted karma to the following notice:
+					</div>
+					<%= render 'shared/notices/notice_description', 
+											:notice_item => post.notice%>
+					<div class="notice_comments">
+					<%= render 'shared/comments/comment_item', 
+											:comment_item => post.comment %>
+					</div>
+				
 				<% end %>
-
+					
 			</div>	
 		
 		<% end %>
@@ -48,6 +70,8 @@
 	</div>
 	
 <% else %>
-	Nothing to show. 
+	<br />
+	<div class="feed_header">This user has no activity.</div>
+  
 	
 <% end %>

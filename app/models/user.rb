@@ -30,38 +30,72 @@
 class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable #, :lockable,:confirmable
+         :recoverable, :rememberable, :trackable, :validatable
 
-  # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :admin, :created_at
-
-  
-#  email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
-  
-  validates( :name, :presence => true,
-             :length => { :maximum => 50 },
-             :uniqueness => {:case_sensitive => false} )
-  
-  devise :validatable
-  
- # validates( :email, :presence => true, 
-#             :format => {:with => email_regex},
-#             :uniqueness => {:case_sensitive => false}  )
-
-#  validates( :password, :presence => true,
-#                        :confirmation => true,
-#                        :length => { :within =>  (6..40) } )
+  attr_accessible :name, :email, :password, :password_confirmation, 
+                  :remember_me, :admin, :created_at
 
   has_many :notices, :dependent => :destroy
   has_many :comments, :dependent => :destroy
   has_many :karma_grants, :dependent => :destroy
-  
+
+  validates :name, :presence => true,
+            :length => { :maximum => 50 },
+            :uniqueness => {:case_sensitive => false} 
+      
+  PostItem = Struct.new(:notice, :comment, :karma_grant, :type, :timestamp)    
+      
   def private_posts
+    posts = []
+
+    notices.each do |n|
+      posts << PostItem.new(n, nil, nil, :notice, n.created_at)
+    end
+
+    comments.each do |c|
+      pnc = posts.detect{ |p| p.notice.id == c.notice.id }
+      if pnc
+        pnc.comment = c
+        pnc.type = :notice_with_comment
+      else
+        posts << PostItem.new(c.notice, c, nil, :comment, c.created_at)
+      end
+    end
+
+    karma_grants.each do |k|
+      pkc = posts.detect{ |p| p.notice.id == k.notice.id}
+      if pkc
+        pkc.karma_grant = k
+        pkc.type = :comment_with_karma_grant
+        pkc.timestamp = (pkc.timestamp < k.created_at ? pkc.timestamp : k.created_at)
+      else
+        posts << PostItem.new(k.notice, nil, k, :karma_grant, k.created_at)
+      end
+    end
+    
+   posts.sort! { |b,a| a.timestamp <=> b.timestamp }
+  
   end
   
   def public_posts
+   posts = []
+
+   notices.each do |n|
+     posts << PostItem.new(n, nil, nil, :notice, n.created_at)
+   end
+
+   comments.each do |c|
+     pn = posts.detect{ |p| p.notice.id == c.notice.id }
+     if pn
+       pn.comment = c
+       pn.type = :notice_with_comment
+     else
+       posts << PostItem.new(c.notice, c, nil, :comment, c.created_at)
+     end
+   end
+   
+   posts.sort! { |b,a| a.timestamp <=> b.timestamp }
+     
   end
-  
-private
 
 end

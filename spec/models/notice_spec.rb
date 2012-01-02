@@ -19,55 +19,47 @@ describe Notice do
 
   before(:each) do
     @user = Factory(:user)
-    @attr = { :content => "notice notice", :user => @user, :doers => "foo bar"}
+    @notice = Factory(:notice, :user_id => @user.id)
+    @attr = { :content => "notice notice", :user_id => @user.id, :doers => "foo bar"}
   end
 
   it "should create a new instance given valid attributes" do
-    Notice.create!(@attr)
+    Notice.create(@attr)
   end
   
   it "should destroy all associated comments" do
-    @notice = Notice.create!(@attr)
     @second_user = Factory(:user, :name => "second", :email => "second@example.com")
-    @comment = Factory(:comment, :notice => @notice, :user => @second_user)
+    @comment = Factory(:comment, :notice_id => @notice.id, :user_id => @second_user.id)
     lambda do
       @notice.destroy
-    end.should change(Comment, :count).by(1)
+    end.should change(Comment, :count).by(-1)
   end
   
   it "should destroy all associated karma_grants" do
-    @notice = Notice.create!(@attr)
     @second_user = Factory(:user, :name => "second", :email => "second@example.com")
     @karma_grant = Factory(:karma_grant, :notice => @notice, :user => @second_user)
     lambda do
       @notice.destroy
-    end.should change(KarmaGrant, :count).by(1)
+    end.should change(KarmaGrant, :count).by(-1)
   end
   
   describe "associations" do
-  
-    before(:each) do
-      @notice = Notice.create(@attr)
-    end
-    
+      
     it "should have a user attribute" do
       @notice.should respond_to(:user)
     end
 
     it "should have the right associated user" do
+#      puts @notice.inspect
       @notice.user.should == @user
     end
     
   end
   
   describe "open notices" do
-
-    before(:each) do
-      @notice = Notice.create(@attr)
-    end
     
     it "should have an open_notices class method" do
-      @notice.should respond_to(:open_notices)
+      Notice.should respond_to(:open_notices)
     end
     
     describe "open_notices method" do
@@ -79,7 +71,8 @@ describe Notice do
       end
       
       it "should return all open notices" do
-        Notice.open_notices.should == [@notice_open1, @notice_open2]
+        Notice.open_notices.should include(@notice_open1)
+        Notice.open_notices.should include(@notice_open2)
       end
       
       it "should not return closed notices" do
@@ -93,7 +86,7 @@ describe Notice do
   describe "closed notices" do
     
     it "should have a closed_notices class method" do
-      User.should respond_to(:closed_notices)
+      Notice.should respond_to(:closed_notices)
     end
     
     describe "closed_notices method" do
@@ -105,7 +98,8 @@ describe Notice do
       end
             
       it "should return all closed notices" do
-        Notice.closed_notices.should == [@notice_closed1, @notice_closed2]
+        Notice.closed_notices.should include(@notice_closed1)
+        Notice.closed_notices.should include(@notice_closed2)
       end
       
       it "should not return open notices" do
@@ -118,10 +112,7 @@ describe Notice do
   
   describe "karma_grants" do
     
-    before(:each) do
-      @notice = Notice.create(@attr)
-    end
-    
+
     it "should have a karma_grants method" do
       @notice.should respond_to(:karma_grants)
     end
@@ -129,6 +120,31 @@ describe Notice do
     it "should have a total_karma method" do
       @notice.should respond_to(:total_karma)
     end
+    
+ #   it "should have a grant_karma method" do
+#      @notice.should respond_to(:grant_karma)
+#    end
+    
+#    it "grant_karma should create a new karma_grant" do
+#      @second_user = Factory(:user, :name => "second", :email => "second@example.com")
+#      lambda do
+#        @notice.grant_karma(2, @second_user)
+#      end.should change(KarmaGrant, :count).by(1)
+#    end
+    
+#    it "should have a revoke_karma method" do
+#      @notice.should respond_to(:revoke_karma)
+#    end
+    
+#    it "revoke_karma should destroy the karma_grant" do
+#      u2 = Factory(:user, :name => "second", :email => "second@example.com")
+#      n2 = Factory(:notice, :user_id => u2.id)
+#      kg = Factory(:karma_grant, :user_id => @user.id, :notice_id => n2.id)
+#      lambda do
+#        @notice.revoke_karma
+#     end.should change(KarmaGrant, :count).by(1)
+#    end
+    
     
     it "should include karma_grants in the karma_grant array" do
       @second_user = Factory(:user, :name => "second", :email => "second@example.com")
@@ -143,16 +159,23 @@ describe Notice do
   
   describe "comments" do
     
-    before(:each) do
-      @notice = Notice.create(@attr)
-    end
+ #   it "should have an add_comment method" do
+#      @notice.should respond_to(:add_comment)
+#    end
     
+#    it "should create a new comment" do
+#      lambda do
+#        @notice.add_comment("comment comment")
+#      end.should change(Comment, :count).by(10)
+#    end
+    
+        
     it "should have a comments method" do
       @notice.should respond_to(:comments)
     end
     
     it "should include comments in the comments array" do
-      @comment = Factory(:comment, :notice => @notice)
+      @comment = Factory(:comment, :notice_id => @notice.id, :user_id => @user.id)
       @notice.comments.should include(@comment)
     end
         

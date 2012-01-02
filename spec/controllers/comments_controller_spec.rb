@@ -40,7 +40,7 @@ describe CommentsController do
             
       it "should have a flash error message" do
         post :create, :comment => @attr
-        flash[:error].should =~ /blank comment/i
+        flash[:error].should =~ /Error/i
       end
       
     end

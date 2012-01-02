@@ -10,9 +10,12 @@ Factory.define :notice do |notice|
   notice.content             "Notice notice notice"
   notice.doers               "KidA KidB"
   notice.user_id             1
+  notice.open                false
 end
 
 Factory.define :comment do |comment|
+  comment.user_id           1
+  comment.notice_id         1
   comment.comment           "Comment comment commment"
 
 end

@@ -6,7 +6,8 @@
 		<%= comment_item.comment %>
 	</div>
 	<div class="comment_date">	
-		<%= comment_item.created_at.localtime.to_formatted_s(:long_ordinal)%>
+		<%#= comment_item.created_at.localtime.to_formatted_s(:long_ordinal)%>
+			<%= time_ago_in_words(comment_item.created_at.localtime)%> ago
 	</div>
 	
 	<% if comment_item.user_id == current_user.id %>

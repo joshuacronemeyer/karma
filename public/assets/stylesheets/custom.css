@@ -240,8 +240,12 @@ height:16px;
 	background: #A0A0A0;
 }
 
+.notice_posted_by{
+	font-size:small;
+	display:inline;
+}
+
 .notice_date {
-	font-style:italic;
 	font-size:small;
 	display: inline;
 }
@@ -307,7 +311,7 @@ height:16px;
 /* New karma grant form */
 
 .new_karma_grant_form{
-	
+	font-size:10pt;
 }
 
 .new_karma_grant_form_header{
