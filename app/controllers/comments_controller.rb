@@ -19,7 +19,7 @@ private
   
   def current_user?
     @comment = Comment.find(params[:id])
-    redirect_back_or(root_path) unless current_user == User.find(@comment.user.id)
+    redirect_back_or(root_path) unless current_user == @comment.user
   end
   
 end

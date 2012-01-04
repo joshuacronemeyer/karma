@@ -6,15 +6,13 @@ class UsersController < ApplicationController
   
   def show
     @user = User.find(params[:id])
-    @title = @user.name
     @user_posts = (@user == current_user ? @user.private_posts : @user.public_posts)
     @user_posts = @user_posts.paginate(:page => params[:page], :per_page => 10)
   end
 
   def new
     @user = User.new
-    @title = "Sign up"
-    if signed_in?
+    if user_signed_in?
       redirect_to root_path
     else
       render '/devise/registrations/new'
@@ -22,7 +20,6 @@ class UsersController < ApplicationController
   end
   
   def edit
-    @title = @user.name + " | Edit profile"
     render '/devise/registrations/edit'
   end
 
@@ -41,7 +38,6 @@ class UsersController < ApplicationController
   
   def index
     @users = User.paginate(:page => params[:page])
-    @title = "All users"
   end
   
   def toggle_admin

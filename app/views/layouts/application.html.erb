@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= title %></title>
+  <title>Karma<%= " | " + content_for(:title) if content_for?(:title)%></title>
   <%= stylesheet_link_tag('stylesheets/custom', :media => 'screen')%>
   <%#= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>

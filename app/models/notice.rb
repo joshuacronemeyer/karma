@@ -25,9 +25,12 @@ class Notice < ActiveRecord::Base
   
   validates :content, :presence => true
   validates :user_id, :presence => true
-  validates :display_title, :presence => true
+  
+  after_initialize :set_defaults
+  before_save :create_display_title
   
   default_scope :order => 'notices.created_at DESC'
+  
   
   def self.open_notices
     self.where(:open => true)
@@ -41,5 +44,19 @@ class Notice < ActiveRecord::Base
     karma_grants.map{ |k| k.karma_points }.sum
   end
   
+private
 
+  def set_defaults
+    self.open ||= false
+  end
+
+  def create_display_title
+    words = self.content.split(/\W+/)
+    if words.count >= 3
+      self.display_title = words[0..2].join(' ') + "..."
+    else
+      self.display_title = words[0..words.count - 1].join(' ')
+    end     
+  end
+  
 end

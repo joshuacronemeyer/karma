@@ -1,13 +1,10 @@
 class NoticesController < ApplicationController
 
-  include ApplicationHelper
-
   before_filter :authenticate_user!
+  before_filter :current_user?, :only => :destroy
 
   def create
     @notice = current_user.notices.new(params[:notice])
-    @notice.open = false
-    @notice.display_title = trunc_title(params[:notice][:content], 3)
     if @notice.save
       @notice.comments.create(:user_id => current_user.id,
                               :comment => params[:comment])
@@ -15,30 +12,23 @@ class NoticesController < ApplicationController
     else
       flash[:error] = "Error"
     end
-  redirect_to root_path  
+    redirect_to root_path  
   end
 
   def show
     @notice = Notice.find(params[:id])
-    @title = @notice.display_title
- #   @title = first_words(@notice.content, 3)
-#    if @notice.content.split(/\W+/).count > 3
-#      @title += "..."
-#    end  
   end
 
   def destroy
-    @notice = Notice.find(params[:id])
-    if @notice.user.id == current_user.id
-      @notice.destroy
-      flash[:success] = "Notice deleted."
-    else
-      flash[:error] = "Not authorized."
-    end
-    redirect_back_or root_path
-
-    
+    @notice.destroy
+    redirect_back_or root_path    
   end
 
+private
+
+  def current_user?
+    @notice = Notice.find(params[:id])
+    redirect_back_or(root_path) unless current_user == @notice.user
+  end
 
 end

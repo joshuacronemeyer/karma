@@ -5,9 +5,8 @@ module ApplicationHelper
     image_tag("images/logo.gif", :alt => "", :style => "vertical-align:middle")
   end
   
-  def title
-    base_title = "Karma"
-    @title.nil? ? base_title : "#{base_title} | #{@title}"
+  def title(title)
+    content_for(:title, " #{title}") if !title.blank?
   end
   
   def error_messages!(context="")
@@ -38,15 +37,6 @@ module ApplicationHelper
     HTML
 
     html.html_safe
-  end
-
-  def trunc_title(string, num)
-    words = string.split(/\W+/)
-    if words.count >= num
-      return words[0..num-1].join(' ') + "..."
-    else
-      return words[0..words.count - 1].join(' ')
-    end     
   end
       
   def resource_name

@@ -3,7 +3,7 @@ class KarmaGrantsController < ApplicationController
   include ApplicationHelper
   
   before_filter :authenticate_user!
-  before_filter :authorized_user, :only => :destroy
+  before_filter :current_user?, :only => :destroy
   
   def create
     if current_user.karma_grants.new( :karma_points => params[:karma_grant][:karma_points],
@@ -22,7 +22,7 @@ class KarmaGrantsController < ApplicationController
   
 private
 
-  def authorized_user
+  def current_user?
     @karma_grant = KarmaGrant.find(params[:id])
     redirect_back_or root_path unless current_user == @karma_grant.user 
   end
