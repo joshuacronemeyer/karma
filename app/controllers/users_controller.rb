@@ -14,7 +14,11 @@ class UsersController < ApplicationController
   def new
     @user = User.new
     @title = "Sign up"
-    render '/devise/registrations/new'
+    if signed_in?
+      redirect_to root_path
+    else
+      render '/devise/registrations/new'
+    end
   end
   
   def edit

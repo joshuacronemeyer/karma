@@ -47,13 +47,20 @@ describe KarmaGrantsController do
     end
     
     it "should not allow more than 3 karma points to be granted" do
+      @attr = { :notice_id => @second_notice.id, :user_id => @user.id, :karma_points => 5}
       lambda do
-        @attr = { :notice_id => @second_notice.id, :user_id => @user.id, :karma_points => 5}
         post :create, :karma_grant => @attr
       end.should_not change(KarmaGrant, :count)
     end
     
-    it "should not grant karma to an open notice"  
+    it "should not grant karma to an open notice" do
+      @second_notice.open = true
+      @attr = { :notice_id => @second_notice.id, :user_id => @user.id, :karma_points => 2}
+      lambda do
+        post :create, :karma_grant => @attr
+      end.should_not change(KarmaGrant, :count)
+    end
+        
     
     describe "failure" do
       

@@ -24,7 +24,8 @@ Spork.prefork do
   RSpec.configure do |config|
     
     config.include Devise::TestHelpers, :type => :controller
-    
+#    require 'capybara/rspec'
+#    require 'capybara/rails'
     
     # == Mock Framework
     #
