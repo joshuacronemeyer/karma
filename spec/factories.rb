@@ -7,7 +7,8 @@ Factory.define :user do |user|
 end
 
 Factory.define :notice do |notice|
-  notice.content             "Notice notice notice"
+  notice.content             "Notice notice notice notice"
+  notice.display_title       "Notice notice notice..."
   notice.doers               "KidA KidB"
   notice.user_id             1
   notice.open                false

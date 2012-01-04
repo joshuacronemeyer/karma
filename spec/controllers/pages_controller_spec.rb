@@ -178,6 +178,7 @@ describe PagesController do
       end
       
       it "should show open notices" do
+        @open_notice = Factory(:notice, :open => true)
         get :home
         response.should have_selector("div.open_notice_item")
       end

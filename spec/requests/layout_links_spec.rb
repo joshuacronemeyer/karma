@@ -4,21 +4,21 @@ describe "Layout links" do
   
   it "should have a home page at '/'" do
     get '/'
-    response.should have_selector('title', :content => "home")
+    response.should have_selector('title', :content => "Home")
   end
   
   it "should have an about page at '/about'" do
     get '/about'
-    response.should have_selector('title', :content => "about")
+    response.should have_selector('title', :content => "About")
   end
   
   it "should have a help page at '/help'" do
     get '/help'
-    response.should have_selector('title', :content => "help")
+    response.should have_selector('title', :content => "Help")
   end
   
   it "should have a Signup page at '/signup'" do
-    get '/signup'
+    get '/sign_up'
       response.should have_selector('title', :content => "Sign up")
   end
   
@@ -38,7 +38,7 @@ describe "Layout links" do
 
         it "should have a signin link" do
           visit root_path
-          response.should have_selector("a", :href => signin_path,
+          response.should have_selector("a", :href => sign_in_path,
                                              :content => "Sign in")
         end
 
@@ -53,7 +53,7 @@ describe "Layout links" do
 
         it "should have a signout link" do
           visit root_path
-          response.should have_selector("a", :href => signout_path,
+          response.should have_selector("a", :href => sign_out_path,
                                              :content => "Sign out")
         end
 

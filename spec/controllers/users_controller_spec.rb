@@ -195,11 +195,11 @@ describe UsersController do
         response.should have_selector("div.comment_item", :content => @user.name)
       end
     
-      it "should not show the same notice twice if the user has added comments or karma_grants" do
+      it "should combine comments with their notices" do
         @comment = Factory(:comment, :user_id => @user.id, :notice_id => @notice.id)
         get :show, :id => @user.id
         response.should_not have_selector("div.user_show_item_description", :content => "posted a notice")
-        response.should_not have_selector("div.user_show_item_description", :content => "commented on")
+        response.should have_selector("div.user_show_item_description", :content => "posted and commented on")
       end
       
       it "should show delete links for a user's own notices" do 
@@ -331,7 +331,7 @@ describe UsersController do
   
   end
   
-  describe "GET 'toggle_admin'" do
+  describe "POST 'toggle_admin'" do
     
     before(:each) do
       @user = Factory(:user, :admin => false)
@@ -340,20 +340,19 @@ describe UsersController do
     describe "for admins" do
       
       before(:each) do
-        @admin = Factory(:user, :admin => true, :name => "admin", :email => "admin@example.com")
-        test_sign_in(@admin)
+        @admin = Factory(:user, :admin => true, :name => "admin", :email => "admin@example.com") 
       end
       
       it "should change the user's admin status" do
-        get :toggle_admin, :id => @user.id
-        @user = User.find(@user.id)
-        @user.admin?.should be_true
+        test_sign_in(@admin)
+        post :toggle_admin, :user_id => @user.id
+        User.find(@user.id).admin?.should be_true
       end
     
       it "should not allow admin to change their own status" do
-        get :toggle_admin, :id => @admin.id
-        @admin = User.find(@admin.id)
-        @admin.admin?.should be_true
+        test_sign_in(@admin)
+        post :toggle_admin, :user_id => @admin.id
+        User.find(@admin.id).admin?.should be_true
       end
       
     end
@@ -362,8 +361,8 @@ describe UsersController do
       
      it "should not change the user's admin status" do
         test_sign_in(@user)
-        get :toggle_admin, :id => @user
-        @user.admin?.should_not be_true
+        post :toggle_admin, :user_id => @user.id
+        User.find(@user.id).admin?.should_not be_true
      end
 
     end

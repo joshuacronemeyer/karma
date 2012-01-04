@@ -9,6 +9,8 @@ class KarmaGrantsController < ApplicationController
     if current_user.karma_grants.new( :karma_points => params[:karma_grant][:karma_points],
                                       :notice_id => params[:karma_grant][:notice_id] ).save
       flash[:success] = "Karma granted!" 
+    else
+      flash[:error] = "Error"
     end    
     redirect_back_or root_path
   end

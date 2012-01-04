@@ -12,7 +12,8 @@ describe KarmaGrantsController do
     end
     
     it "should deny access to 'destroy'" do
-      @karma_grant = Factory(:karma_grant)
+      @notice = Factory(:notice, :user_id => 2)
+      @karma_grant = Factory(:karma_grant, :notice_id => @notice.id)
       delete :destroy, :id => @karma_grant.id
       response.should redirect_to(new_user_session_path)
     end
@@ -23,6 +24,7 @@ describe KarmaGrantsController do
     
     before(:each) do
       @user = Factory(:user)
+      @notice = Factory(:notice, :user_id => @user.id)
       test_sign_in(@user)
       @second_user = Factory(:user, :name => "second", :email => "second@example.com")
       @second_notice = Factory(:notice, :user_id => @second_user.id)
@@ -66,7 +68,7 @@ describe KarmaGrantsController do
       end
       
       it "shoud display a flash error message" do
-        post :create, :karma_grant => @attr
+        post :create, :karma_grant => @attr.merge(:notice_id => @notice.id)
         flash[:error].should =~ /error/i
       end
       
@@ -108,14 +110,15 @@ describe KarmaGrantsController do
   
     before(:each) do
       @user = Factory(:user)
+      @second = Factory(:user, :name => "second", :email => "second@example.com")
       test_sign_in(@user)
       @notice = Factory(:notice, :user_id => @user.id )
-      @karma_grant = Factory(:karma_grant, :user_id => @user.id, :notice_id => @notice.id)
+      @second_notice = Factory(:notice, :user_id => @second.id)
     end
   
     describe "for the same user" do
-      
       it "should delete the karma_grant" do
+        @karma_grant = Factory(:karma_grant, :user_id => @user.id, :notice_id => @second_notice.id)
         lambda do
           delete :destroy, :id => @karma_grant
         end.should change(KarmaGrant, :count).by(-1)
@@ -126,8 +129,7 @@ describe KarmaGrantsController do
     describe "for a different user" do
       
       it "should not delete the karma_grant" do
-        @second_user = Factory(:user, :name => "second", :email => "second@example.com")
-        @second_grant = Factory(:karma_grant, :user_id => @second_user.id, :notice_id => @notice.id)
+        @second_grant = Factory(:karma_grant, :user_id => @second.id, :notice_id => @notice.id)
         lambda do
           delete :destroy, :id => @second_grant
         end.should_not change(KarmaGrant, :count)

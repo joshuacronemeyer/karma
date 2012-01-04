@@ -25,6 +25,7 @@ class Notice < ActiveRecord::Base
   
   validates :content, :presence => true
   validates :user_id, :presence => true
+  validates :display_title, :presence => true
   
   default_scope :order => 'notices.created_at DESC'
   

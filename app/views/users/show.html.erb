@@ -12,14 +12,15 @@
 
 			<div class="user_show_item">
 				
-				<% if post.type == :notice %>
+				<% case post.type %>
+				<% when :notice %>
 					<div class="user_show_item_description">
 						posted a notice:
 					</div>
 					<%= render 'shared/notices/notice_description', 
 											:notice_item => post.notice %>				
 				
-				<% elsif post.type == :comment %>
+				<% when :comment %>
 					<div class="user_show_item_description">
 						commented on the following notice:
 					</div>
@@ -30,7 +31,7 @@
 											:comment_item => post.comment %>
 					</div>
 					
-				<% elsif post.type == :notice_with_comment %>	
+				<% when :notice_with_comment %>	
 					<div class="user_show_item_description">
 						posted and commented on the following notice:
 					</div>
@@ -41,14 +42,14 @@
 											:comment_item => post.comment %>
 					</div>
 					
-				<% elsif post.type == :karma_grant %>
+				<% when :karma_grant %>
 					<div class="user_show_item_description">
 						granted karma to the following notice:
 					</div>
 					<%= render 'shared/notices/notice_description', 
 											:notice_item => post.notice %>
 								
-				<% elsif post.type == :comment_with_karma_grant %>
+				<% when :comment_with_karma_grant %>
 					<div class="user_show_item_description">
 						commented on and granted karma to the following notice:
 					</div>

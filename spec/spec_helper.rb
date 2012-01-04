@@ -48,7 +48,7 @@ Spork.prefork do
     end
 
     def integration_sign_in(user)
-       visit signin_path
+       visit sign_in_path
        fill_in :email,    :with => user.email
        fill_in :password, :with => user.password
        click_button

@@ -12,10 +12,10 @@
 		<li><%= link_to "Help", help_path %></li>
 
 		<% if user_signed_in? %>
-		<li><%= link_to "Sign out", destroy_user_session_path, :method => :delete %></li>
+		<li><%= link_to "Sign out", sign_out_path %></li>
 		<% else %>	
-		<li><%= link_to "Sign up", new_registration_path(resource_name) %></li>
-		<li><%= link_to "Sign in", new_user_session_path %></li>
+		<li><%= link_to "Sign up", sign_up_path %></li>
+		<li><%= link_to "Sign in", sign_in_path %></li>
 		<% end>%>
 
 	</ul>

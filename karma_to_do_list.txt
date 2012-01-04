@@ -1,17 +1,9 @@
 
-finish user show page
-implement comment and karma_grant deletion
-write notice show page
-implement comment trimming
 implement Ajax interface
-
 implement un-claimed notices
 implement recurring notices
-
-
-
-implement proper user tagging
 implement admin control panel
+implement proper user tagging
 complete devise email support
 implement mailing list functionality
 remove unneeded routes (action limiters for resources)

@@ -5,13 +5,15 @@ class NoticesController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    @notice = current_user.notices.new(params[:notice],
-                                      :open => false,
-                                      :display_title => trunc_title(params[:notice][:content], 3))
+    @notice = current_user.notices.new(params[:notice])
+    @notice.open = false
+    @notice.display_title = trunc_title(params[:notice][:content], 3)
     if @notice.save
       @notice.comments.create(:user_id => current_user.id,
                               :comment => params[:comment])
       flash[:success] = "notice added"
+    else
+      flash[:error] = "Error"
     end
   redirect_to root_path  
   end

@@ -23,6 +23,7 @@ describe CommentsController do
     
     before(:each) do
       @user = Factory(:user)
+      @notice = Factory(:notice)
       test_sign_in(@user)
     end
         
@@ -48,7 +49,7 @@ describe CommentsController do
     describe "success" do
       
       before(:each) do
-        @attr = {:comment => "FUBAR"}
+        @attr = {:comment => "FUBAR", :user_id => @user.id, :notice_id => @notice.id}
       end
       
       it "should create a comment" do

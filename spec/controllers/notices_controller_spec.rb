@@ -51,7 +51,7 @@ describe NoticesController do
     describe "success" do
       
       before(:each) do
-        @attr = { :content => "gabba gabba", :user => @user }
+        @attr = { :content => "gabba gabba gabba hey", :user => @user }
       end
       
       it "should create a notice" do
@@ -59,6 +59,12 @@ describe NoticesController do
           post :create, :notice => @attr
         end.should change(Notice, :count).by(1)
       end
+
+      it "should create a correct display title" do
+        post :create, :notice => @attr
+        Notice.find_by_content("gabba gabba gabba hey").display_title.should == "gabba gabba gabba..."
+      end
+        
       
       it "should render the home page" do
         post :create, :notice => @attr
@@ -80,7 +86,8 @@ describe NoticesController do
       @user = Factory(:user)
       test_sign_in(@user)
       @notice = Factory(:notice, :user_id => @user.id,
-                                 :content => "this is a new notice")
+                                 :content => "this is a new notice",
+                                 :display_title => "this is a...")
     end
     
     it "should be successful" do
