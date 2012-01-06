@@ -80,12 +80,9 @@ describe "Users" do
   describe "update" do
     
     before (:each) do
-      user = Factory(:user)
-      visit sign_in_path
-      fill_in :email, :with => user.email
-      fill_in :password, :with => user.password
-      click_button
-      visit edit_user_path(user)
+      @user = Factory(:user)
+      integration_sign_in(@user)
+      visit edit_user_path(@user)
     end
     
     describe "failure" do
@@ -116,38 +113,76 @@ describe "Users" do
     describe "success" do
       
       before(:each) do
-        @attr = { :email => "user@example.com", :name => "New Name", :password => "barbaz",
-                  :password_confirmation => "barbaz" }
+        fill_in "Name",                       :with => "Example User"
+        fill_in "New password",               :with => "yesyesyes"
+        fill_in "New password Confirmation",  :with => "yesyesyes"
+        fill_in "Re-enter current password",  :with => @user.password
       end
       
-      it "should change the user's attributes" 
-      
-      it "should redirect to the user show page"
-      
-      it "should have a flash message" 
-      
+      it "should change the user's attributes" do
+        click_button
+        @user = User.find(@user.id)
+        @user.name.should == "Example User"
+      end
+          
+      it "should render to the user show page" do
+        click_button
+        response.should render_template 'users/show'
+      end
+            
     end
 
   end
   
   describe "self-delete account" do
     
-    it "should ask for confirmation"
-
-    it "should delete the user"
-    
-    it "should render the sign-up page"
+#   before(:each) do
+#     @user = Factory(:user)
+#     integration_sign_in(@user)
+#   end
+#   
+#    it "should ask for confirmation" do    
+#
+#   it "should delete the user" do
+#     visit edit_user_path(@user)
+#     puts response.inspect
+#     lambda do
+#       click_link "Cancel my account"
+#     end.should change(User, :count).by(-1)
+#   end
+#   
+#   it "should render the sign-up page" do
+#     visit edit_user_path(@user)
+#     click_link "Cancel my account"
+#     response.should render_template 'pages/home'
+#   end
 
   end
   
   describe "admin-delete account" do
     
-    it "should ask for confirmation"
-    
-    it "should delete the user"
-    
-    it "should render the user index page"
-    
+#   before(:each) do
+#     @user = Factory(:user)
+#     @user.admin = true
+#     integration_sign_in(@user)
+#     @second = Factory(:user, :name => "second", :email => "second@example.com")
+#   end
+#   
+#    it "should ask for confirmation" do
+#   
+#   it "should delete the user" do
+#     visit users_path
+#     lambda do
+#       click_link "Delete second"
+#     end.should change(User, :count).by(-1)
+#   end
+#   
+#   it "should render the user index page" do
+#     visit users_path
+#     click_link "Delete second"
+#     response.should render_template 'users/index'
+#   end
+#   
   end
   
   

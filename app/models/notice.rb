@@ -48,6 +48,7 @@ private
 
   def set_defaults
     self.open ||= false
+    self.timestamp_completed ||= self.created_at
   end
 
   def create_display_title

@@ -177,6 +177,7 @@ describe PagesController do
         response.should render_template('layouts/_sidebar')
       end
       
+
       it "should show open notices" do
         @open_notice = Factory(:notice, :open => true)
         get :home

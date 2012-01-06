@@ -60,8 +60,6 @@ namespace :db do
     @notice.content = Faker::Lorem.sentence(3)
     @notice.self_doer = (user.id < 4)
     @notice.doers = Faker::Name.name + " " + Faker::Name.name
-    @notice.open = false
-    @notice.display_title = trunc(@notice.content, 3)
     @notice.save
   end
   

@@ -6,7 +6,7 @@ module ApplicationHelper
   end
   
   def title(title)
-    content_for(:title, " #{title}") if !title.blank?
+    content_for(:title, "#{title}") if !title.blank?
   end
   
   def error_messages!(context="")

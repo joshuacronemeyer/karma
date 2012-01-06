@@ -1,6 +1,7 @@
 
-implement Ajax interface
 implement un-claimed notices
+
+implement Ajax interface
 implement recurring notices
 implement admin control panel
 implement proper user tagging
