@@ -5,7 +5,7 @@
 		<% @comment_items[0..(limit-1)].each do |c| %>
 			<%= render 'shared/comments/comment_item', :comment_item => c %>
 		<% end %>
-		<%= link_to "view all...", "notices/#{notice_item.id}" %>
+		<%= link_to "view all...", notice_path(notice_item) %>
 
 	<% else %>
 		<%= render :partial => 'shared/comments/comment_item', :collection => @comment_items %>

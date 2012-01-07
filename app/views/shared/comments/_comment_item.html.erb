@@ -3,7 +3,7 @@
 	comment: <strong><%= link_to commenter.name, user_path(commenter), :class => "user_show_link" %></strong> says:
 
 	<div class="comment_comment">		
-		<%= comment_item.comment %>
+		<%= comment_item.content %>
 	</div>
 	<div class="comment_date">	
 		<%= time_ago_in_words(comment_item.created_at.localtime)%> ago

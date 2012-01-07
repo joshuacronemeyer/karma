@@ -17,7 +17,7 @@ end
 Factory.define :comment do |comment|
   comment.user_id           1
   comment.notice_id         1
-  comment.comment           "Comment comment commment"
+  comment.content           "Comment comment commment"
 
 end
 

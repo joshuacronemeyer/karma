@@ -49,7 +49,7 @@ describe CommentsController do
     describe "success" do
       
       before(:each) do
-        @attr = {:comment => "FUBAR", :user_id => @user.id, :notice_id => @notice.id}
+        @attr = {:content => "FUBAR", :user_id => @user.id, :notice_id => @notice.id}
       end
       
       it "should create a comment" do

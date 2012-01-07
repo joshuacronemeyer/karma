@@ -1,10 +1,10 @@
 <% title @notice.display_title %>
-<div class="notice_item">
+<div class="closed_notice_item">
 
-	<%= render 'shared/notices/notice_description', 
+	<%= render 'shared/notices/closed_notice_description', 
 			:notice_item => @notice %>	
 
-	<div class="notice_comments">
+	<div class="closed_notice_comments">
 		<%= render 'shared/comments/comment_feed', :notice_item => @notice, :limit => nil %>
 		<%= render 'shared/comments/new_comment_form', :notice_item => @notice  %>
 	</div>

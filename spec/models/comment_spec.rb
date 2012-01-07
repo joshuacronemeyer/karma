@@ -2,13 +2,12 @@
 #
 # Table name: comments
 #
-#  id               :integer         not null, primary key
-#  original_comment :boolean
-#  notice_id        :integer
-#  comment          :string(255)
-#  created_at       :datetime
-#  updated_at       :datetime
-#  user_id          :integer
+#  id         :integer         not null, primary key
+#  user_id    :integer
+#  notice_id  :integer
+#  content    :string(255)
+#  created_at :datetime
+#  updated_at :datetime
 #
 
 require 'spec_helper'
@@ -18,7 +17,7 @@ describe Comment do
   before(:each) do
     @user = Factory(:user)
     @notice = Factory(:notice)
-    @attr = { :comment => "Comment comment", :notice_id => @notice.id, :user_id => @user.id }
+    @attr = { :content => "Comment comment", :notice_id => @notice.id, :user_id => @user.id }
   end
   
   it "should create a new instance given valid attributes" do
@@ -62,7 +61,7 @@ describe Comment do
     end
     
     it "should require nonblank content" do
-      no_content_comment = Comment.new(@attr.merge(:comment => " "))
+      no_content_comment = Comment.new(@attr.merge(:content => " "))
       no_content_comment.should_not be_valid
     end
     

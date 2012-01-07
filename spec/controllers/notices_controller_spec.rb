@@ -102,25 +102,25 @@ describe NoticesController do
     
     it "should show the notice" do
       get :show, :id => @notice
-      response.should have_selector("div.notice_item",
+      response.should have_selector("div.closed_notice_item",
                                     :content => @notice.content)
     end
                                   
     it "should show the notice's doers" do
       get :show, :id => @notice
-      response.should have_selector("div.notice_doers")
+      response.should have_selector("div.closed_notice_doers")
     end
                                     
     it "should show the notice's poster" do
       get :show, :id => @notice
-      response.should have_selector("div.notice_posted_by")
+      response.should have_selector("div.closed_notice_posted_by")
     end
     
     it "should show the notice's poster as a doer, if self_doer" do
       @notice.self_doer = true
       @notice.save
       get :show, :id => @notice
-      response.should have_selector("div.notice_doers", :content => @user.name)
+      response.should have_selector("div.closed_notice_doers", :content => @user.name)
     end
     
     it "should show a link to the poster's page" do
@@ -130,7 +130,7 @@ describe NoticesController do
 
     it "should show karma points" do
       get :show, :id => @notice
-      response.should have_selector("div.notice_karma_points", :content => "total karma")
+      response.should have_selector("div.closed_notice_karma_points", :content => "total karma")
     end
 
     it "should show revoke links for a user's own karma_grants" do
@@ -149,7 +149,7 @@ describe NoticesController do
       
       it "should show comments" do
         get :show, :id => @notice
-        response.should have_selector("div.notice_comments", :content => @comment.comment)
+        response.should have_selector("div.closed_notice_comments", :content => @comment.content)
       end
     
       it "should show a link to the commenter's page" do
@@ -238,12 +238,7 @@ describe NoticesController do
           lambda do
             delete :destroy, :id => @notice
           end.should_not change(Notice, :count)
-        end
-        
-        it "should display an error message" do
-          delete :destroy, :id => @notice
-          flash[:error].should =~ /Not authorized/i 
-        end    
+        end  
       end
       
     end

@@ -11,23 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20111223153038) do
+ActiveRecord::Schema.define(:version => 20111111023610) do
 
   create_table "comments", :force => true do |t|
-    t.boolean  "original_comment"
+    t.integer  "user_id"
     t.integer  "notice_id"
-    t.string   "comment"
+    t.string   "content"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "user_id"
   end
 
   create_table "karma_grants", :force => true do |t|
     t.integer  "user_id"
+    t.integer  "notice_id"
     t.integer  "karma_points"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "notice_id"
   end
 
   create_table "notices", :force => true do |t|
@@ -35,17 +34,19 @@ ActiveRecord::Schema.define(:version => 20111223153038) do
     t.string   "doers"
     t.datetime "timestamp_completed"
     t.boolean  "open"
+    t.string   "content"
+    t.string   "display_title"
+    t.boolean  "self_doer"
+    t.integer  "description_comment_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "content"
-    t.boolean  "self_doer"
-    t.string   "display_title"
   end
 
   create_table "users", :force => true do |t|
     t.string   "name"
     t.string   "email"
     t.string   "encrypted_password"
+    t.boolean  "admin"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "reset_password_token"
@@ -63,11 +64,9 @@ ActiveRecord::Schema.define(:version => 20111223153038) do
     t.integer  "failed_attempts",        :default => 0
     t.string   "unlock_token"
     t.datetime "locked_at"
-    t.boolean  "admin"
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
-  add_index "users", ["name"], :name => "index_users_on_name", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
 
 end

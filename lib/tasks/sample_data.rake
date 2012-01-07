@@ -66,7 +66,7 @@ namespace :db do
   def make_comment(user)
     @notice_ids = Notice.all.each.collect {|x| x.id }
     @comment = user.comments.new
-    @comment.comment = Faker::Lorem.sentence(6)
+    @comment.content = Faker::Lorem.sentence(6)
     @comment.notice_id = @notice_ids[rand(@notice_ids.count)]
     @comment.save
   end

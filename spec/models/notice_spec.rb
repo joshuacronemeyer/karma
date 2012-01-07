@@ -2,15 +2,17 @@
 #
 # Table name: notices
 #
-#  id                  :integer         not null, primary key
-#  user_id             :integer
-#  doers               :string(255)
-#  timestamp_completed :datetime
-#  open                :boolean
-#  created_at          :datetime
-#  updated_at          :datetime
-#  description         :string(255)
-#  self_doer           :boolean
+#  id                     :integer         not null, primary key
+#  user_id                :integer
+#  doers                  :string(255)
+#  timestamp_completed    :datetime
+#  open                   :boolean
+#  content                :string(255)
+#  display_title          :string(255)
+#  self_doer              :boolean
+#  description_comment_id :integer
+#  created_at             :datetime
+#  updated_at             :datetime
 #
 
 require 'spec_helper'
@@ -178,6 +180,17 @@ describe Notice do
       @comment = Factory(:comment, :notice_id => @notice.id, :user_id => @user.id)
       @notice.comments.should include(@comment)
     end
+
+    it "should have a description_comment attribute" do
+      @notice.should respond_to(:description_comment)
+    end
+    
+    it "should have the right description comment" do
+      @comment = Factory(:comment, :user_id => @user.id)
+      @notice.description_comment_id = @comment.id
+      @notice.description_comment.should == @comment
+    end
+ 
         
   end
         

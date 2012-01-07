@@ -18,14 +18,14 @@
 					<div class="user_show_item_description">
 						posted a notice:
 					</div>
-					<%= render 'shared/notices/notice_description', 
+					<%= render 'shared/notices/closed_notice_description', 
 											:notice_item => post.notice %>				
 				
 				<% when :comment %>
 					<div class="user_show_item_description">
 						commented on the following notice:
 					</div>
-					<%= render 'shared/notices/notice_description', 
+					<%= render 'shared/notices/closed_notice_description', 
 											:notice_item => post.notice%>
 					<div class="notice_comments">
 					<%= render 'shared/comments/comment_item', 
@@ -36,7 +36,7 @@
 					<div class="user_show_item_description">
 						posted and commented on the following notice:
 					</div>
-					<%= render 'shared/notices/notice_description', 
+					<%= render 'shared/notices/closed_notice_description', 
 											:notice_item => post.notice%>
 					<div class="notice_comments">
 					<%= render 'shared/comments/comment_item', 
@@ -47,14 +47,14 @@
 					<div class="user_show_item_description">
 						granted karma to the following notice:
 					</div>
-					<%= render 'shared/notices/notice_description', 
+					<%= render 'shared/notices/closed_notice_description', 
 											:notice_item => post.notice %>
 								
 				<% when :comment_with_karma_grant %>
 					<div class="user_show_item_description">
 						commented on and granted karma to the following notice:
 					</div>
-					<%= render 'shared/notices/notice_description', 
+					<%= render 'shared/notices/closed_notice_description', 
 											:notice_item => post.notice%>
 					<div class="notice_comments">
 					<%= render 'shared/comments/comment_item', 

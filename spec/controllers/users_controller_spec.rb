@@ -157,7 +157,7 @@ describe UsersController do
         @notices.each do |n|
           2.times do
             @comments << Factory(:comment, :user_id => @user.id,
-                                           :comment => Faker::Lorem.sentence(5),
+                                           :content => Faker::Lorem.sentence(5),
                                            :notice_id => n.id)
           end
         end
@@ -184,8 +184,8 @@ describe UsersController do
         @notice.self_doer = true
         @notice.save
         get :show, :id => @user
-        response.should have_selector("div.notice_description")
-        response.should have_selector("div.notice_doers", :content => @user.name)
+        response.should have_selector("div.closed_notice_description")
+        response.should have_selector("div.closed_notice_doers", :content => @user.name)
       end
        
       it "should show the user's comments" do
@@ -228,7 +228,7 @@ describe UsersController do
       
         it "should show karma grants for the user's notices" do 
           get :show, :id => @second_user
-          response.should have_selector("div.notice_karma_points", :content => "total karma")
+          response.should have_selector("div.closed_notice_karma_points", :content => "total karma")
         end
       
         describe "for a user's own page" do

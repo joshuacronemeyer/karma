@@ -2,16 +2,17 @@
 #
 # Table name: notices
 #
-#  id                  :integer         not null, primary key
-#  user_id             :integer
-#  doers               :string(255)
-#  timestamp_completed :datetime
-#  open                :boolean
-#  created_at          :datetime
-#  updated_at          :datetime
-#  content             :string(255)
-#  self_doer           :boolean
-#  display_title       :string(255)
+#  id                     :integer         not null, primary key
+#  user_id                :integer
+#  doers                  :string(255)
+#  timestamp_completed    :datetime
+#  open                   :boolean
+#  content                :string(255)
+#  display_title          :string(255)
+#  self_doer              :boolean
+#  description_comment_id :integer
+#  created_at             :datetime
+#  updated_at             :datetime
 #
 
 class Notice < ActiveRecord::Base
@@ -42,6 +43,10 @@ class Notice < ActiveRecord::Base
 
   def total_karma
     karma_grants.map{ |k| k.karma_points }.sum
+  end
+  
+  def description_comment
+    Comment.find(self.description_comment_id)
   end
   
 private

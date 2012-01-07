@@ -19,14 +19,14 @@ describe "Comments" do
       it "should not create a new comment" do
         lambda do
           visit root_path
-          fill_in :comment_comment, :with => ""
+          fill_in :comment_content, :with => ""
           click_button "Post"
         end.should_not change(Comment, :count)
       end
       
       it "should render the last viewed page" do
         visit root_path
-        fill_in :comment_comment, :with => ""
+        fill_in :comment_content, :with => ""
         click_button "Post"
         response.should render_template('pages/home')
       end
@@ -37,14 +37,14 @@ describe "Comments" do
       it "should create a new comment" do
         lambda do
           visit root_path
-          fill_in :comment_comment, :with => "gabba gabba"
+          fill_in :comment_content, :with => "gabba gabba"
           click_button "Post"
         end.should_not change(Comment, :count)
       end
       
       it "should render the last viewed page" do
         visit root_path
-        fill_in :comment_comment, :with => "gabba gabba"
+        fill_in :comment_content, :with => "gabba gabba"
         click_button "Post"
         response.should render_template('pages/home')
       end
