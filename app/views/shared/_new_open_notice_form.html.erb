@@ -1,0 +1,42 @@
+<div class="new_open_notice_form">
+	
+	<%= form_for(Notice.new, :html => { :class => "new_open_notice" }) do |f| %>
+	
+		<%= render 'shared/error_messages', :object => f.object %>
+	
+				<%= f.hidden_field :open, :value => true%>
+	
+		<div class="new_open_notice_header">Post a new task:</div>
+		
+		<div class="new_open_notice_content">
+			<div class="field">
+				<%= f.label :content, "task:" %><br />
+			</div>
+
+			<div class="field">
+				<%= f.text_field :content, :size => 50 %>
+			</div>
+		</div>
+		
+		<div class="new_open_notice_comment">
+			<div class="field">
+				<%= label_tag :comment, "comment:", 
+							  :style => "vertical-align:top" %><br />
+			</div>					
+
+			<div class="field">
+				<%= text_area_tag :comment, nil, :size => "37x6" %>
+			</div>
+		</div>
+		
+		<div class="new_open_notice_submit">
+			<div class="actions">
+				<%= f.submit "Post" %>
+			</div>
+		</div>
+	
+	<% end %>
+
+</div>
+	
+		

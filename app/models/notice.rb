@@ -5,12 +5,14 @@
 #  id                     :integer         not null, primary key
 #  user_id                :integer
 #  doers                  :string(255)
-#  timestamp_completed    :datetime
+#  time_completed         :datetime
 #  open                   :boolean
 #  content                :string(255)
 #  display_title          :string(255)
 #  self_doer              :boolean
 #  description_comment_id :integer
+#  due_date               :datetime
+#  completed_by_id        :integer
 #  created_at             :datetime
 #  updated_at             :datetime
 #
@@ -29,8 +31,9 @@ class Notice < ActiveRecord::Base
   
   after_initialize :set_defaults
   before_save :create_display_title
+  before_save :set_completed_by
   
-  default_scope :order => 'notices.created_at DESC'
+  default_scope :order => 'notices.time_completed DESC'
   
   
   def self.open_notices
@@ -46,14 +49,23 @@ class Notice < ActiveRecord::Base
   end
   
   def description_comment
-    Comment.find(self.description_comment_id)
+    if !self.description_comment_id.nil?
+      Comment.find(self.description_comment_id)
+    else
+      nil
+    end
+  end
+  
+  def regular_comments
+    comments.where("id != '#{description_comment_id}'")
   end
   
 private
 
   def set_defaults
     self.open ||= false
-    self.timestamp_completed ||= self.created_at
+    (self.time_completed ||= self.created_at) if !self.open
+    self.due_date ||= Time.now
   end
 
   def create_display_title
@@ -63,6 +75,10 @@ private
     else
       self.display_title = words[0..words.count - 1].join(' ')
     end     
+  end
+  
+  def set_completed_by
+    self.completed_by_id = self.user_id if (!self.open && self.self_doer)
   end
   
 end

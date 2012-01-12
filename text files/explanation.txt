@@ -1,0 +1,93 @@
+#Unclaimed notices
+
+##Main page display
+
+Unclaimed or open notices appear in the right-hand sidebar on the
+main screen. They appear in a feed list with two columns; open
+notices with no set due date appear in the right column, and open
+notices with a due date appear in the left column. Notices with due
+dates are sorted by their due date, with earlier due dates
+appearing at the top. Notices that repeat will indicate how
+frequently they repeat.
+
+Only the 10 (or so) most urgent tasks will appear in each column.
+Below the task list will be a link that users can click to view a
+page listing all open tasks.
+
+##Karma points
+
+Open notices cannot be granted karma points. If a closed notice is
+reopened, its accumulated karma points will be destroyed.
+
+##Comments
+
+As with regular notices, the user who posts the task can add a
+descriptive comment to the task. Other users can add comments to
+open tasks, but not to repeating tasks. If an open task has
+additional comments attached, those comments will be displayed in
+the open task view page; a notification icon will appear with the
+task item in the sidebar, but the full comment list will not be
+displayed in the sidebar.
+
+##Creating a new open task
+
+Users can create a new open task by clicking on the "Add new
+task..." link at the top of the sidebar. This will open a new page
+with a form (eventually, this will be a floating popup window,
+rather than a separate page). The form will have spaces for the
+description of the task, a comment, a due date with a popup
+calendar, and radio buttons to select how the task repeats (daily,
+weekly, monthly, or no repeat). When the user clicks the submit
+button, the new task will be added to the database.
+
+##Claiming a task
+
+Users can "claim a task" by clicking the "Mark as completed" link
+attached to the task item in either the sidebar, the open tasks
+page, or the page of the user who posted the task. This will bring
+the user to a page with a form. The form has a checkmark to
+indicate if the user themselves completed the task, a text input
+field to indicate who else performed the task, and a comment field.
+When the user submit this task, the task's status will be converted
+to "closed" in the database, and a completion timestamp will be
+registered. The notice's complete by user and doers fields will also be updated. 
+
+##Re-opening a closed task
+
+Only the user who the user who originally posted the task, the user who
+marked it as complete, or an admin can re-open the task. For those
+users, the notice will have a "Re-open" link attached. When they click
+this link they will see a pop-up notification warning them that
+re-opening the notice will cause all associated karma points to be
+destroyed. If they agree, the karma points will be destroyed and the
+notice's status will be switched to open.
+	
+##Deleting an open task
+
+Only the user who originally posted the task or an admin can delete an
+open task. The user will be presented with a confirmation dialog asking
+if they are sure they want to delete the notice. If the notice repeats,
+they will be asked if they want to delete all instances or just that
+instance.
+
+##Open task view page
+
+The open tasks view page will show all open tasks. As with the sidebar,
+open notices with due dates will appear in the right-hand column,
+and open notices without due dates will appear in the left-hand column.
+The page will also include a link (or form) to create a new open
+notice. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-<% @comment_items = notice_item.comments.all %>
+<% @comment_items = notice_item.regular_comments %>
 <div class="comment_feed">
 
 	<% if limit && @comment_items.count > limit %>
@@ -8,7 +8,8 @@
 		<%= link_to "view all...", notice_path(notice_item) %>
 
 	<% else %>
-		<%= render :partial => 'shared/comments/comment_item', :collection => @comment_items %>
-
+		<%= render :partial => '/shared/comments/comment_item', :collection => @comment_items %>
 	<% end %>
+
+
 </div>

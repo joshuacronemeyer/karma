@@ -266,6 +266,10 @@ height:16px;
 
 /* Comments */
 
+.closed_notice_description_comment {
+	background: lightblue;
+}
+
 .comment_feed{
 
 }
@@ -327,6 +331,21 @@ height:16px;
 	display:inline;
 }
 
+
+/* sidebar */
+
+.open_notice_item {
+	background-color: gray;
+	margin: 2px;
+}
+
+.open_notice_past_due_date {
+	background-color:red;
+}
+
+.open_notice_current_due_date {
+	background-color:green;
+}
 
 /* User profile display */
 

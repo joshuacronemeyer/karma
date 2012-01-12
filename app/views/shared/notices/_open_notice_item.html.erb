@@ -1,0 +1,11 @@
+<div class="open_notice_item">
+	
+	<%= render 'shared/notices/open_notice_description', 
+			:notice_item => open_notice_item %>	
+	
+	<%= link_to "Claim this task", notice_claim_path(open_notice_item), 
+				:class => "open_notice_show_link", 
+				:method => :get,
+				:title => "Claim this task" %>
+														
+</div>

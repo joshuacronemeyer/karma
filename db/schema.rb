@@ -32,12 +32,14 @@ ActiveRecord::Schema.define(:version => 20111111023610) do
   create_table "notices", :force => true do |t|
     t.integer  "user_id"
     t.string   "doers"
-    t.datetime "timestamp_completed"
+    t.datetime "time_completed"
     t.boolean  "open"
     t.string   "content"
     t.string   "display_title"
     t.boolean  "self_doer"
     t.integer  "description_comment_id"
+    t.datetime "due_date"
+    t.integer  "completed_by_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

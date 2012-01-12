@@ -24,6 +24,7 @@ class KarmaGrant < ActiveRecord::Base
              
   validate :not_already_granted
   validate :not_self_grant
+  validate :closed_notice
 
 private
 
@@ -36,6 +37,12 @@ private
   def not_self_grant
     if !notice_id.blank? && Notice.find(notice_id).user_id == user_id
       errors.add(:self_grant, "Users can't grant karma to themselves.") 
+    end
+  end
+  
+  def closed_notice
+    if !notice_id.blank? && Notice.find(notice_id).open
+      errors.add(:open_notice, "Karma can't be granted to an open notice")
     end
   end
   

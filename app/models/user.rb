@@ -49,7 +49,7 @@ class User < ActiveRecord::Base
     posts = []
 
     notices.each do |n|
-      posts << PostItem.new(n, nil, nil, :notice, n.created_at)
+      posts << PostItem.new(n, nil, nil, :notice, n.time_completed) if !n.open
     end
 
     comments.each do |c|
@@ -81,7 +81,7 @@ class User < ActiveRecord::Base
    posts = []
 
    notices.each do |n|
-     posts << PostItem.new(n, nil, nil, :notice, n.created_at)
+     posts << PostItem.new(n, nil, nil, :notice, n.time_completed) if !n.open
    end
 
    comments.each do |c|

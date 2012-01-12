@@ -187,7 +187,17 @@ describe UsersController do
         response.should have_selector("div.closed_notice_description")
         response.should have_selector("div.closed_notice_doers", :content => @user.name)
       end
-       
+      
+      it "should show a karma grant form for the user's notices"
+      
+      it "should show a comment form for the user's notices"
+      
+      it "should show a 'mark as completed' link for the user's open notices"
+      
+      it "should show a re-open link for notices the user has posted"
+
+      it "should show a re-open link for notices the user has completed"
+      
       it "should show the user's comments" do
         @comment = Factory(:comment, :user_id => @user.id, :notice_id => @notice.id)
         get :show, :id => @user

@@ -1,0 +1,21 @@
+<div class="open_notice_feed">
+
+	<div class="open_notice_feed_header">Unfinished tasks:</div>
+
+	<% if @open_notice_items.count > 10 %>
+		<% @open_notice_items.each do |notice_item| %>
+			<%= render 'shared/notices/open_notice_item',
+						:open_notice_item => notice_item %>
+		<% end %>
+		
+	<% else %>	
+
+		<%= render :partial => 'shared/notices/open_notice_item', 
+				   :collection => @open_notice_items %>
+		
+	<% end %>
+
+
+
+
+</div>

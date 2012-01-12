@@ -23,17 +23,20 @@ describe PagesController do
 
     describe "for signed-in users" do
 
+      before(:each) do
+        @user = Factory(:user)
+        test_sign_in(@user)
+      end
+
       describe "closed notices" do
 
         before(:each) do
-          @user = Factory(:user)
-          test_sign_in(@user)
           @notice = Factory(:notice, :user_id => @user.id)
         end
       
-        it "should show a new notice form" do
+        it "should show a new closed notice form" do
           get :home
-          response.should have_selector("form", :class => "new_notice")
+          response.should have_selector("form", :class => "new_closed_notice")
         end
 
         it "should paginate posts" do
@@ -94,6 +97,8 @@ describe PagesController do
           response.should have_selector("a", :class => "notice_delete_link",
                                              :content => "delete")
         end
+
+        it "should show a re-open link for authorized users"
                                               
         describe "comments" do
         
@@ -142,8 +147,9 @@ describe PagesController do
 
           it "should show the first comment in a unique div" do
             @notice.description_comment_id = @comment.id
+            @notice.save
             get :home
-            response.should have_selector("div.closed_notice_first_comment_item")
+            response.should have_selector("div.closed_notice_description_comment")
           end
   
 
@@ -209,12 +215,39 @@ describe PagesController do
                 
         it "should show a sidebar" do
           get :home
-          response.should render_template('layouts/_sidebar')
+          response.should have_selector("section.sidebar")
         end
+        
+        it "should have a column for dated open notices" do
+          get :home
+          response.should have_selector("div.open_notices_feed_dated")
+        end
+        
+        it "should have a column for undated open notices" do
+          get :home
+          response.should have_selector("div.open_notices_feed_undated")
+        end
+      
+        it "should show a link to the new open notice page" do
+          get :home
+          response.should have_selector("a", :class => "new_open_notice_link")
+        end
+        
+        it "should show dated notices sorted by their due date"
+        
+        it "should show undated notices sorted randomly"
+        
+        it "should only show the 10 most urgent tasks of each type"
+        
+        it "should have a link to the open notices view page"
+        
+        it "should show an indicator when open notices have attached comments"
+        
+        it "should show a 'mark as claimed' link"
       
         it "should show open notices in the sidebar" do
           get :home
-          response.shoud have_selector("section", :class => "sidebar") do |sidebar|
+          response.should have_selector("section", :class => "sidebar") do |sidebar|
             sidebar.should have_selector("div.open_notice_item")
           end
         end
@@ -238,20 +271,22 @@ describe PagesController do
         
         it "should show current notices due date in unique div" do
           @open_notice.due_date = 3.days.from_now
+          @open_notice.save
           get :home
-          response.should have_selector("div.open_notice_current_date")
+          response.should have_selector("div.open_notice_current_due_date")
         end
         
         it "should show the first comment in a unique div" do
           @comment = Factory(:comment, :notice_id =>@open_notice.id)
           @open_notice.description_comment_id = @comment.id
+          @open_notice.save
           get :home
-          response.should have_selector("div.open_notice_first_comment_item")
+          response.should have_selector("div.open_notice_description_comment")
         end
         
         it "should show a link to the notice's show page" do
           get :home
-          respnse.should have_selector("a", :class => "open_notice_show_link")
+          response.should have_selector("a", :class => "open_notice_show_link")
         end
 
       end

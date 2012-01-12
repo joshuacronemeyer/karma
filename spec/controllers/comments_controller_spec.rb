@@ -26,7 +26,7 @@ describe CommentsController do
       @notice = Factory(:notice)
       test_sign_in(@user)
     end
-        
+    
     describe "failure" do
       
       before(:each) do

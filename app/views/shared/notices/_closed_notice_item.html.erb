@@ -1,0 +1,14 @@
+<div class="closed_notice_item">
+	
+	<%= render 'shared/notices/closed_notice_description', :notice_item => closed_notice_item %>	
+	
+	<%= link_to ">>", notice_path(closed_notice_item), :class => "closed_notice_show_link", 
+												 :title => "Show this notice" %>
+	
+	<div class="closed_notice_comments">
+		<%= render 'shared/comments/comment_feed', :notice_item => closed_notice_item, :limit => 3 %>
+		<%= render 'shared/comments/new_comment_form', :notice_item => closed_notice_item  %>
+	</div>
+	
+</div>
+

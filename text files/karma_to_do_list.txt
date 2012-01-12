@@ -1,12 +1,17 @@
 
 implement un-claimed notices
-
-implement Ajax interface
+	show notices claimed in user feed
+	allow users to unclaim notices
+	allow posters to unclaim notices
 implement recurring notices
-implement admin control panel
+implement admin features
+refactor views
+implement Ajax interface
+
 implement proper user tagging
 complete devise email support
 implement mailing list functionality
 remove unneeded routes (action limiters for resources)
 stylize
 produce Help documentation
+create project management system?

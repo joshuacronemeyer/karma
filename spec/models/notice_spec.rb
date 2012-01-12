@@ -5,12 +5,14 @@
 #  id                     :integer         not null, primary key
 #  user_id                :integer
 #  doers                  :string(255)
-#  timestamp_completed    :datetime
+#  time_completed         :datetime
 #  open                   :boolean
 #  content                :string(255)
 #  display_title          :string(255)
 #  self_doer              :boolean
 #  description_comment_id :integer
+#  due_date               :datetime
+#  completed_by_id        :integer
 #  created_at             :datetime
 #  updated_at             :datetime
 #
@@ -25,24 +27,29 @@ describe Notice do
     @attr = { :content => "notice notice", :user_id => @user.id, :doers => "foo bar"}
   end
 
+
   it "should create a new instance given valid attributes" do
     Notice.create(@attr)
   end
+
+  describe "destruction" do
   
-  it "should destroy all associated comments" do
-    @second_user = Factory(:user, :name => "second", :email => "second@example.com")
-    @comment = Factory(:comment, :notice_id => @notice.id, :user_id => @second_user.id)
-    lambda do
-      @notice.destroy
-    end.should change(Comment, :count).by(-1)
-  end
+    it "should destroy all associated comments" do
+      @second_user = Factory(:user, :name => "second", :email => "second@example.com")
+      @comment = Factory(:comment, :notice_id => @notice.id, :user_id => @second_user.id)
+      lambda do
+        @notice.destroy
+      end.should change(Comment, :count).by(-1)
+    end
   
-  it "should destroy all associated karma_grants" do
-    @second_user = Factory(:user, :name => "second", :email => "second@example.com")
-    @karma_grant = Factory(:karma_grant, :notice => @notice, :user => @second_user)
-    lambda do
-      @notice.destroy
-    end.should change(KarmaGrant, :count).by(-1)
+    it "should destroy all associated karma_grants" do
+      @second_user = Factory(:user, :name => "second", :email => "second@example.com")
+      @karma_grant = Factory(:karma_grant, :notice => @notice, :user => @second_user)
+      lambda do
+        @notice.destroy
+      end.should change(KarmaGrant, :count).by(-1)
+    end
+  
   end
   
   describe "associations" do
@@ -60,12 +67,13 @@ describe Notice do
   
   describe "open notices" do
     
-    it "should have an open_notices class method" do
-      Notice.should respond_to(:open_notices)
-    end
-    
-    describe "open_notices method" do
+  
+    describe "open_notices class method" do
       
+      it "should have an open_notices class method" do
+        Notice.should respond_to(:open_notices)
+      end
+
       before(:each) do
         @notice_open1 = Factory(:notice, :user => @user, :open => true)
         @notice_open2 = Factory(:notice, :user => @user, :open => true)
@@ -82,16 +90,33 @@ describe Notice do
       end
       
     end
+  
+    describe "set_open object method" do
+      
+      it "should have an set_open method"
+      
+      it "should open the notices"
+      
+      it "should destroy associated karma_grants"
+      
+      it "should set the notice's completed time stamp to nil"
+      
+      it "should set the notice's completed by user to nil"
+      
+      it "should set the notice's doers string to nil"
+
+    end
     
   end
   
   describe "closed notices" do
     
-    it "should have a closed_notices class method" do
-      Notice.should respond_to(:closed_notices)
-    end
-    
     describe "closed_notices method" do
+      
+      it "should have a closed_notices class method" do
+        Notice.should respond_to(:closed_notices)
+      end
+      
 
       before(:each) do
         @notice_open = Factory(:notice, :user => @user, :open => true)
@@ -109,44 +134,32 @@ describe Notice do
       end
     
     end
-    
+ 
+    describe "set_closed object method" do
+      
+      it "should have a set_closed method"
+      
+      it "should close the notice"
+
+      it "should update the notice's completed time stamp"
+
+      it "should update the notice's complete by user"
+
+      it "should update the notice's doers string"        
+      
+    end
+          
   end
   
   describe "karma_grants" do
     
-
     it "should have a karma_grants method" do
       @notice.should respond_to(:karma_grants)
     end
     
     it "should have a total_karma method" do
       @notice.should respond_to(:total_karma)
-    end
-    
- #   it "should have a grant_karma method" do
-#      @notice.should respond_to(:grant_karma)
-#    end
-    
-#    it "grant_karma should create a new karma_grant" do
-#      @second_user = Factory(:user, :name => "second", :email => "second@example.com")
-#      lambda do
-#        @notice.grant_karma(2, @second_user)
-#      end.should change(KarmaGrant, :count).by(1)
-#    end
-    
-#    it "should have a revoke_karma method" do
-#      @notice.should respond_to(:revoke_karma)
-#    end
-    
-#    it "revoke_karma should destroy the karma_grant" do
-#      u2 = Factory(:user, :name => "second", :email => "second@example.com")
-#      n2 = Factory(:notice, :user_id => u2.id)
-#      kg = Factory(:karma_grant, :user_id => @user.id, :notice_id => n2.id)
-#      lambda do
-#        @notice.revoke_karma
-#     end.should change(KarmaGrant, :count).by(1)
-#    end
-    
+    end    
     
     it "should include karma_grants in the karma_grant array" do
       @second_user = Factory(:user, :name => "second", :email => "second@example.com")
@@ -160,18 +173,7 @@ describe Notice do
   end
   
   describe "comments" do
-    
- #   it "should have an add_comment method" do
-#      @notice.should respond_to(:add_comment)
-#    end
-    
-#    it "should create a new comment" do
-#      lambda do
-#        @notice.add_comment("comment comment")
-#      end.should change(Comment, :count).by(10)
-#    end
-    
-        
+            
     it "should have a comments method" do
       @notice.should respond_to(:comments)
     end
@@ -191,8 +193,8 @@ describe Notice do
       @notice.description_comment.should == @comment
     end
  
-        
   end
+  
         
   describe "validations" do
     
@@ -210,7 +212,7 @@ describe Notice do
       no_user_id_notice = Notice.new(@attr.merge(:user_id => nil))
       no_user_id_notice.should_not be_valid
     end
-        
-  end
+  end      
+   
 
 end

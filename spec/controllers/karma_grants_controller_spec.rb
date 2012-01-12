@@ -55,6 +55,7 @@ describe KarmaGrantsController do
     
     it "should not grant karma to an open notice" do
       @second_notice.open = true
+      @second_notice.save
       @attr = { :notice_id => @second_notice.id, :user_id => @user.id, :karma_points => 2}
       lambda do
         post :create, :karma_grant => @attr

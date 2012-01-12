@@ -14,7 +14,13 @@ Karma::Application.routes.draw do
   
   # need to add action limiters for resources
   
-  resources :notices   
+  resources :notices do
+    match :claim, :via => :get, :action => :claim, :as => :claim
+ #   match :claim, :via => :put, :action => :update_claimed_status, :as => :update_claimed_status
+    collection do
+      match :open, :via => :get, :action => :open_index
+    end
+  end
   
   resources :comments
   

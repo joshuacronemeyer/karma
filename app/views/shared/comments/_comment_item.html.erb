@@ -2,7 +2,7 @@
 	<% commenter = User.find(comment_item.user_id) %>
 	comment: <strong><%= link_to commenter.name, user_path(commenter), :class => "user_show_link" %></strong> says:
 
-	<div class="comment_comment">		
+	<div class="comment_content">		
 		<%= comment_item.content %>
 	</div>
 	<div class="comment_date">	

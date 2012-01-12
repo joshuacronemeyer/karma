@@ -1,0 +1,40 @@
+<div class="open_notice_description">
+	
+	<div class="open_notice_content">
+		<%= notice_item.content %>
+	</div>
+	
+	<% if !notice_item.description_comment_id.nil? %>
+		<div class="open_notice_description_comment">
+			<%= notice_item.description_comment.content %>
+		</div>
+	<% end %>
+	
+	<div class="open_notice_posted_by">
+		<% poster = User.find(notice_item.user_id) %>
+		Posted by: <%= link_to poster.name, user_path(poster), :class => "user_show_link" %>
+	</div>
+	
+	<div class="open_notice_date">
+		<%= time_ago_in_words(notice_item.created_at.localtime)%> ago
+	</div>
+	
+	<% if notice_item.due_date < Time.now %>
+		<div class="open_notice_past_due_date">
+			Due: <%= time_ago_in_words(notice_item.due_date.localtime)%> ago
+		</div>
+	<% else %>
+		<div class="open_notice_current_due_date">
+			Due: <%= distance_of_time_in_words_to_now(notice_item.due_date.localtime)%> from now
+		</div>
+	<% end %>
+
+	
+	<% if User.find(notice_item.user_id) == current_user %>
+		<%= link_to "delete", notice_item, :method => :delete,
+						:confirm => "Are you sure you want to delete this notice?",
+						:title => "Delete notice",
+						:class => "notice_delete_link" %>
+	<% end %>
+	
+</div>

@@ -48,7 +48,12 @@ namespace :db do
       sleep(1)
     end
     
-    8.times do |n|
+    10.times do
+      make_open_notice(User.find(1+rand(15)))
+      sleep(1)
+    end
+      
+    8.times do 
       make_notice(User.first)
       sleep(1)
     end
@@ -61,9 +66,35 @@ namespace :db do
     @notice.self_doer = (user.id < 4)
     @notice.doers = Faker::Name.name + " " + Faker::Name.name
     @notice.save
+    @comment = Comment.new
+    @comment.content = Faker::Lorem.sentence(4)
+    @comment.notice_id = @notice.id
+    @comment.user_id = user.id
+    @comment.save
+    @notice.description_comment_id = @comment.id    
+    @notice.save
+    
   end
   
-  def make_comment(user)
+  def make_open_notice(user)
+    @notice = user.notices.new
+    @notice.content = Faker::Lorem.sentence(3)
+    @notice.open = true
+    if (rand(2) == 0)
+      @notice.due_date = 3.days.from_now
+    else
+      @notice.due_date = 3.days.ago
+    end
+    @comment = Comment.new
+    @comment.content = Faker::Lorem.sentence(4)
+    @comment.notice_id = @notice.id
+    @comment.user_id = user.id
+    @comment.save
+    @notice.description_comment_id = @comment.id
+    @notice.save
+  end
+  
+  def make_comment(user, notice = nil)
     @notice_ids = Notice.all.each.collect {|x| x.id }
     @comment = user.comments.new
     @comment.content = Faker::Lorem.sentence(6)

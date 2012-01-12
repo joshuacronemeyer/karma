@@ -4,10 +4,7 @@ describe "Notices" do
   
   before(:each) do
     user = Factory(:user)
-    visit sign_in_path
-    fill_in :email, :with => user.email
-    fill_in :password, :with => user.password
-    click_button
+    integration_sign_in(user)
   end
   
   describe "creation" do
@@ -38,27 +35,6 @@ describe "Notices" do
       
     end
     
-  end
-  
-  describe "destruction" do
-    
-#   describe "failure" do
-#     
-#     it "should not destroy the notice"
-#     
-#     it "should render the last viewed page"
-#     
-#   end
-#   
-#   describe "success" do
-#     
-#     it "should destroy the notice"
-#     
-#     it "should render the last viewed page"
-#     
-#   end
-    
-  end
-  
+  end  
   
 end

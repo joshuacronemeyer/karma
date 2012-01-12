@@ -1,0 +1,21 @@
+<div class="closed_notice_feed">
+
+	<div class="pagination">
+	    <div class="page_info">
+	      <%= page_entries_info @closed_notice_items  %>
+	    </div>
+	 	<%= will_paginate @closed_notice_items %>
+	  </div>
+	
+	<div class="closed_notice_feed_header">Recent notices:</div>
+	<%= render :partial => 'shared/notices/closed_notice_item', 
+			   :collection => @closed_notice_items %>
+
+	<div class="pagination">
+	    <div class="page_info">
+	      <%= page_entries_info @closed_notice_items  %>
+	    </div>
+	    	<%= will_paginate @closed_notice_items %>
+	  </div>
+
+</div>

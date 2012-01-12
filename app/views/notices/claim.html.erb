@@ -1,12 +1,16 @@
-<div class="new_notice_form">
+<h1>Claim this task</h1>
+
+<div class="new_closed_notice_form">
 	
-	<%= form_for Notice.new do |f| %>
+	<%= form_for( @notice, :html => {:class => "new_closed_notice"},
+					:url => notice_update_claimed_status_path(@notice)) do |f| %>
 	
 		<%= render 'shared/error_messages', :object => f.object %>
 	
-		<div class="new_notice_header">Post a new notice:</div>
+		<div class="new_closed_notice_header">Post a new notice:</div>
+			<%= f.hidden_field :open, :value => false %>
 
-		<div class="new_notice_doers">
+		<div class="new_closed_notice_doers">
 			<div class="field" >
 				<%= f.check_box :self_doer %>
 				<%= f.label :self_doer, "I (and other people):"%><br />
@@ -18,7 +22,7 @@
 			</div>
 		</div>
 		
-		<div class="new_notice_content">
+		<div class="new_closed_notice_content">
 			<div class="field">
 				<%= f.label :content, "did what?" %><br />
 			</div>
@@ -28,7 +32,7 @@
 			</div>
 		</div>
 		
-		<div class="new_notice_comment">
+		<div class="new_closed_notice_comment">
 			<div class="field">
 				<%= label_tag :comment, "comment:", 
 							  :style => "vertical-align:top" %><br />
@@ -39,7 +43,7 @@
 			</div>
 		</div>
 		
-		<div class="new_notice_submit">
+		<div class="new_closed_notice_submit">
 			<div class="actions">
 				<%= f.submit "Post" %>
 			</div>
@@ -49,5 +53,4 @@
 
 </div>
 	
-		
 		
