@@ -4,9 +4,11 @@ implement un-claimed notices
 	allow users to unclaim notices
 	allow posters to unclaim notices
 implement recurring notices
+implement same-user notice editing
 implement admin features
 refactor views
 implement Ajax interface
+add DB indices for searched by fields
 
 implement proper user tagging
 complete devise email support

@@ -128,7 +128,11 @@ describe UsersController do
       before(:each) do
            @user = Factory(:user)
            test_sign_in(@user)
-           @notice = Factory(:notice, :user_id => @user.id)
+           @notice = Factory(:notice, :user_id => @user.id,
+                             :open => false, :content => "first notice")
+           @second_user = Factory(:user, :name => "second", :email => "second@example.com")
+           @second_notice = Factory(:notice, :user_id => @second_user.id,
+                                    :content => "second notice")
       end
     
       it "should be successful" do
@@ -181,22 +185,48 @@ describe UsersController do
       end
 
       it "should show the user's notices" do
-        @notice.self_doer = true
-        @notice.save
+        @notice.update_attribute(:self_doer, true)
         get :show, :id => @user
-        response.should have_selector("div.closed_notice_description")
+        response.should have_selector("div.closed_notice_description",
+                                      :content => @notice.content )
         response.should have_selector("div.closed_notice_doers", :content => @user.name)
       end
       
-      it "should show a karma grant form for the user's notices"
+      it "should show a karma grant form for the user's notices" do
+        get :show, :id => @second_user
+        response.should have_selector("form", :class => "new_karma_grant")
+      end
       
-      it "should show a comment form for the user's notices"
+      it "should show a comment form for the user's notices" do
+        get :show, :id => @second_user
+        response.should have_selector("form", :class => "new_comment")
+      end
       
-      it "should show a 'mark as completed' link for the user's open notices"
+      it "should show a 'Claim this task' link for the user's open notices" do
+        @notice.update_attribute(:open, true)
+        get :show, :id => @user
+        response.should have_selector("a", :url => notice_claim_path(@notice),
+                                           :content => "Claim this task")
+      end
       
-      it "should show a re-open link for notices the user has posted"
+      it "should show a re-open link for the user's closed notices" do
+        get :show, :id => @user
+        response.should have_selector("a", :url => notice_claim_path(@notice),
+                                           :content => "Mark this task as uncompleted")
+      end
+      
+      it "should show notices the user has completed" do
+        @second_notice.update_attribute(:completed_by_id => @user.id)
+        get :show, :id => @user
+        response.should have_selector("div.closed_notice_description", 
+                                      :content => @second_notice.content)
+      end
 
-      it "should show a re-open link for notices the user has completed"
+      it "should show a re-open link for notices the user has completed" do
+        @second_notice.update_attribute(:completed_by_id => @user.id)
+        get :show, :id => @user
+        response.should have_selector("a", :url => notice_claim_path(@second_notice))
+      end
       
       it "should show the user's comments" do
         @comment = Factory(:comment, :user_id => @user.id, :notice_id => @notice.id)

@@ -19,13 +19,17 @@
 		<%= time_ago_in_words(notice_item.created_at.localtime)%> ago
 	</div>
 	
-	<% if notice_item.due_date < Time.now %>
+	<% if notice_item.due_date <= Time.now %>
 		<div class="open_notice_past_due_date">
 			Due: <%= time_ago_in_words(notice_item.due_date.localtime)%> ago
 		</div>
-	<% else %>
+	<% elsif notice_item.due_date > Time.now %>
 		<div class="open_notice_current_due_date">
 			Due: <%= distance_of_time_in_words_to_now(notice_item.due_date.localtime)%> from now
+		</div>
+	<% else %>
+		<div clas="open_notice_no_due_date">
+			No due date
 		</div>
 	<% end %>
 

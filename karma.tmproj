@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>currentDocument</key>
-	<string>spec/controllers/pages_controller_spec.rb</string>
+	<string>spec/models/notice_spec.rb</string>
 	<key>documents</key>
 	<array>
 		<dict>
@@ -18,7 +18,7 @@
 		</dict>
 	</array>
 	<key>fileHierarchyDrawerWidth</key>
-	<integer>375</integer>
+	<integer>324</integer>
 	<key>metaData</key>
 	<dict>
 		<key>app/assets/javascripts/application.js</key>
@@ -77,43 +77,28 @@
 			<key>firstVisibleLine</key>
 			<integer>0</integer>
 		</dict>
-		<key>spec/controllers/pages_controller_spec.rb</key>
+		<key>spec/models/notice_spec.rb</key>
 		<dict>
 			<key>caret</key>
 			<dict>
 				<key>column</key>
-				<integer>60</integer>
+				<integer>0</integer>
 				<key>line</key>
-				<integer>239</integer>
+				<integer>28</integer>
 			</dict>
 			<key>firstVisibleColumn</key>
 			<integer>0</integer>
 			<key>firstVisibleLine</key>
-			<integer>208</integer>
-		</dict>
-		<key>text files/explanation.txt</key>
-		<dict>
-			<key>caret</key>
-			<dict>
-				<key>column</key>
-				<integer>8</integer>
-				<key>line</key>
-				<integer>78</integer>
-			</dict>
-			<key>firstVisibleColumn</key>
-			<integer>0</integer>
-			<key>firstVisibleLine</key>
-			<integer>0</integer>
+			<integer>2</integer>
 		</dict>
 	</dict>
 	<key>openDocuments</key>
 	<array>
-		<string>text files/explanation.txt</string>
-		<string>spec/controllers/pages_controller_spec.rb</string>
+		<string>spec/models/notice_spec.rb</string>
 	</array>
 	<key>showFileHierarchyDrawer</key>
 	<true/>
 	<key>windowFrame</key>
-	<string>{{565, 81}, {782, 797}}</string>
+	<string>{{431, 74}, {782, 797}}</string>
 </dict>
 </plist>

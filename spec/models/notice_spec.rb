@@ -27,7 +27,6 @@ describe Notice do
     @attr = { :content => "notice notice", :user_id => @user.id, :doers => "foo bar"}
   end
 
-
   it "should create a new instance given valid attributes" do
     Notice.create(@attr)
   end
@@ -66,18 +65,21 @@ describe Notice do
   end
   
   describe "open notices" do
-    
-  
+     
     describe "open_notices class method" do
-      
-      it "should have an open_notices class method" do
-        Notice.should respond_to(:open_notices)
-      end
 
       before(:each) do
-        @notice_open1 = Factory(:notice, :user => @user, :open => true)
-        @notice_open2 = Factory(:notice, :user => @user, :open => true)
+        @notice_open1 = Factory(:notice, :user => @user, :open => true,
+                                :due_date => Time.now)
+        @notice_open2 = Factory(:notice, :user => @user, :open => true,
+                                :due_date => 3.days.from_now)
+        @notice_open3 = Factory(:notice, :user => @user, :open => true,
+                                :due_date => 3.days.ago)
         @notice_closed = Factory(:notice, :user => @user, :open => false)
+      end
+            
+      it "should have an open_notices class method" do
+        Notice.should respond_to(:open_notices)
       end
       
       it "should return all open notices" do
@@ -88,22 +90,55 @@ describe Notice do
       it "should not return closed notices" do
         Notice.open_notices.should_not include(@notice_closed)
       end
-      
+     
+      it "should return notices sorted by their due date" do
+        Notice.open_notices.should == [@notice_open3, @notice_open1, @notice_open2]
+      end
+        
     end
   
     describe "set_open object method" do
       
-      it "should have an set_open method"
+      before(:each) do
+        @notice_closed = Factory(:notice, :user => @user, :open => false)
+      end
       
-      it "should open the notices"
+      it "should have an set_open method" do
+        @notice_closed.should respond_to(:set_open)
+      end
       
-      it "should destroy associated karma_grants"
+      it "should open the notices" do
+        lambda do
+          @notice_closed.set_open
+        end.should change(@notice_closed, :open).to(true)
+      end
       
-      it "should set the notice's completed time stamp to nil"
+      it "should destroy associated karma_grants" do
+        @second_user = Factory(:user, :name => "second", :email => "second@example.com")
+        @karma_grant = Factory(:karma_grant, :user_id => @second_user.id, 
+                               :notice_id => @notice_closed.id)
+        lambda do
+          @notice_closed.set_open
+        end.should change(KarmaGrant, :count).by(-1)
+      end
       
-      it "should set the notice's completed by user to nil"
+      it "should set the notice's completed time stamp to nil" do
+        @notice_closed.set_open
+        @notice_closed.reload
+        @notice_closed.time_completed.should == nil
+      end
       
-      it "should set the notice's doers string to nil"
+      it "should set the notice's completed by user to nil" do
+        @notice_closed.set_open
+        @notice_closed.reload
+        @notice_closed.completed_by_id.should == nil
+      end
+        
+      it "should set the notice's doers string to nil" do
+        @notice_closed.set_open
+        @notice_closed.reload
+        @notice_closed.doers.should == nil
+      end
 
     end
     
@@ -113,22 +148,31 @@ describe Notice do
     
     describe "closed_notices method" do
       
+      before(:each) do
+        @notice_open = Factory(:notice, :user => @user, :open => true)
+        @notice_closed1 = Factory(:notice, :user => @user, :open => false,
+                                  :time_completed => 3.days.ago)
+        @notice_closed2 = Factory(:notice, :user => @user, :open => false,
+                                  :time_completed => 4.days.ago)
+        @notice_closed3 = Factory(:notice, :user => @user, :open => false,
+                                  :time_completed => Time.now)
+        
+      end
+      
       it "should have a closed_notices class method" do
         Notice.should respond_to(:closed_notices)
       end
-      
-
-      before(:each) do
-        @notice_open = Factory(:notice, :user => @user, :open => true)
-        @notice_closed1 = Factory(:notice, :user => @user, :open => false)
-        @notice_closed2 = Factory(:notice, :user => @user, :open => false)
-      end
-            
+           
       it "should return all closed notices" do
         Notice.closed_notices.should include(@notice_closed1)
         Notice.closed_notices.should include(@notice_closed2)
+        Notice.closed_notices.should include(@notice_closed3)
       end
       
+      it "should return closed notices in the right order" do
+        Notice.closed_notices.should == [@notice_closed3, @notice_closed1, @notice_closed2]
+      end
+        
       it "should not return open notices" do
         Notice.closed_notices.should_not include(@notice_open)
       end
@@ -137,15 +181,40 @@ describe Notice do
  
     describe "set_closed object method" do
       
-      it "should have a set_closed method"
+      it "should have a set_closed method" do
+        @notice_open.should respond_to(:set_closed)
+      end
       
-      it "should close the notice"
+      it "should close the notice" do
+        lambda do
+          @notice_open.set_closed(@user, true, "x y z")
+        end.should change(@notice_open, :open).to(false)
+      end
 
-      it "should update the notice's completed time stamp"
+      it "should update the notice's completed time stamp" do
+        lambda do
+          @notice_open.set_closed(@user, true, "x y z")
+        end.should change(@notice_open, :time_completed)
+      end
 
-      it "should update the notice's complete by user"
+      it "should update the notice's complete by user when self_doer" do
+        @notice_open.set_closed(@user, true, "x y z")
+        @notice_open.reload
+        @notice_open.completed_by_id.should == @user.id
+      end
 
-      it "should update the notice's doers string"        
+      it "should not update the notice's complete by user when not self_doer" do
+        @notice_open.set_closed(@user, false, "x y z")
+        @notice_open.reload
+        @notice_open.completed_by_id.should_not == @user.id
+      end
+
+
+      it "should update the notice's doers string" do
+        @notice_open.set_closed(@user, true, "x y z")
+        @notice_open.reload
+        @notice_open.doers.should == "x y z"
+      end     
       
     end
           
@@ -194,8 +263,7 @@ describe Notice do
     end
  
   end
-  
-        
+      
   describe "validations" do
     
     it "should reject notices with blank content" do

@@ -98,7 +98,11 @@ describe PagesController do
                                              :content => "delete")
         end
 
-        it "should show a re-open link for authorized users"
+        it "should show a re-open link for authorized users" do
+          get :home
+          response.should have_selector("a", :class => "notice_reopen_link",
+                                             :content => "Mark as uncompleted")
+        end
                                               
         describe "comments" do
         
@@ -232,18 +236,37 @@ describe PagesController do
           get :home
           response.should have_selector("a", :class => "new_open_notice_link")
         end
+                
+        it "should only show the 10 most urgent tasks of each type" do
+          @notices = []
+          (0..12).each do |n|
+            @notices[n] = Factory(:notice, :open => true, :due_date => Time.now + n.days,
+                                           :content => "open notice #{n.to_s}")
+          end
+          get 'notices/open'
+          response.should have_selector("div.open_notice_item", 
+                    :content => @notices[2].content)
+          response.should_not have_selector("div.open_notice_item", 
+                    :content => @notices[12].content)
+        end
         
-        it "should show dated notices sorted by their due date"
+        it "should have a link to the open notices view page" do
+          get 'notices/open'
+          response.should have_selector("a", :url => notice_path(@notice))
+        end
         
-        it "should show undated notices sorted randomly"
+        it "should show an indicator when open notices have attached comments" do
+          @comment = Factory(:comment, :notice_id => @notice.id, :user_id => @user)
+          get 'notices/open'
+          response.should have_selector("div.open_notice_comment_item",
+                                        :content => @comment.content)
+        end
         
-        it "should only show the 10 most urgent tasks of each type"
-        
-        it "should have a link to the open notices view page"
-        
-        it "should show an indicator when open notices have attached comments"
-        
-        it "should show a 'mark as claimed' link"
+        it "should show a 'claim this task' link" do
+          get 'notices/open'
+          response.should have_selector("a", :url => notice_claim_path(@notice),
+                                             :content => "Claim this task")
+        end
       
         it "should show open notices in the sidebar" do
           get :home

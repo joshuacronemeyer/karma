@@ -122,17 +122,7 @@ describe User do
     it "should have a notices attribute" do 
       @user.should respond_to(:notices)
     end
-    
-#    it "should have a post_notice method" do
-#      @user.should respond_to(:post_notice)
-#    end
-    
-#    it "should have create a new notice" do
-#      lambda do
-#        @user.post_notice("notice something", "foo and bar", true, "comment comment")
-#      end.should change(Notice, :count).by(1)
-#    end
-        
+            
     it "should return the notices" do
       @user.notices.include?(@notice1).should be_true
     end
@@ -144,6 +134,10 @@ describe User do
       end
     end
  
+    it "should have a completed_notices attribute" do
+      @user.should respond_to(:completed_notices)
+    end
+      
   end
 
   describe "comment associations" do
